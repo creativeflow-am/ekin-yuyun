@@ -16,7 +16,7 @@ export async function generatePdfWfo(data, filterBulan) {
   const { default: autoTable } = await import("jspdf-autotable");
   const doc = new jsPDF('p', 'pt', 'a4');
   
-  doc.setFontSize(12);
+  doc.setFontSize(11);
   doc.setFont("helvetica", "bold");
   doc.text("LAPORAN PELAKSANAAN KEGIATAN KEHUMASAN", 297, 50, { align: "center" });
 
@@ -91,6 +91,26 @@ export async function generatePdfWfo(data, filterBulan) {
       }
   });
 
+  // Tanda Tangan WFO
+  let finalY = doc.lastAutoTable.finalY + 40;
+  if (finalY + 115 > doc.internal.pageSize.getHeight()) {
+      doc.addPage();
+      finalY = 50;
+  }
+  doc.setFontSize(11);
+  doc.setFont("helvetica", "normal");
+
+  const leftX = 40, rightX = 380;
+  doc.text("Pegawai Yang Dinilai,", leftX, finalY);
+  doc.text("Yuyun Wulandari, S.Pd.I", leftX, finalY + 85);
+  doc.text("NIP. 199207012020122008", leftX, finalY + 100);
+
+  doc.text("Mengetahui,", rightX, finalY - 15);
+  doc.text("Pejabat Penilai Kerja", rightX, finalY);
+  doc.text("${ttd_pengirim}", rightX, finalY + 45);
+  doc.text("M. Arskal Salim GP", rightX, finalY + 85);
+  doc.text("NIP. 1970090119961003", rightX, finalY + 100);
+
   doc.save("Laporan_WFO.pdf");
 }
 
@@ -102,7 +122,7 @@ export async function generatePdfWfa(data, filterBulan) {
   const { default: autoTable } = await import("jspdf-autotable");
   const doc = new jsPDF('p', 'pt', 'a4');
 
-  doc.setFontSize(12);
+  doc.setFontSize(11);
   doc.setFont("helvetica", "bold");
   doc.text("LAPORAN PELAKSANAAN TUGAS WORK FROM ANYWHERE (WFA)", 297, 50, { align: 'center' });
 
@@ -202,7 +222,7 @@ export async function generatePdfWfa(data, filterBulan) {
       doc.addPage();
       finalY = 50;
   }
-  doc.setFontSize(10);
+  doc.setFontSize(11);
   doc.setFont("helvetica", "normal");
 
   const leftX = 40, rightX = 380;
@@ -212,8 +232,9 @@ export async function generatePdfWfa(data, filterBulan) {
 
   doc.text("Mengetahui,", rightX, finalY - 15);
   doc.text("Pejabat Penilai Kerja", rightX, finalY);
+  doc.text("${ttd_pengirim}", rightX, finalY + 45);
   doc.text("M. Arskal Salim GP", rightX, finalY + 85);
-  doc.text("NIP. 19700901199603", rightX, finalY + 100);
+  doc.text("NIP. 1970090119961003", rightX, finalY + 100);
 
   doc.save("Laporan_WFA.pdf");
 }
@@ -226,7 +247,7 @@ export async function generatePdfOverview(data, filterBulan) {
   const { default: autoTable } = await import("jspdf-autotable");
   const doc = new jsPDF('p', 'pt', 'a4');
   
-  doc.setFontSize(12);
+  doc.setFontSize(11);
   doc.setFont("helvetica", "bold");
   doc.text("LAPORAN PELAKSANAAN TUGAS", 297, 50, { align: 'center' });
 
@@ -297,6 +318,26 @@ export async function generatePdfOverview(data, filterBulan) {
           5: { cellWidth: 120, halign: 'left' }
       }
   });
+
+  // Tanda Tangan Overview
+  let finalY = doc.lastAutoTable.finalY + 40;
+  if (finalY + 115 > doc.internal.pageSize.getHeight()) {
+      doc.addPage();
+      finalY = 50;
+  }
+  doc.setFontSize(11);
+  doc.setFont("helvetica", "normal");
+
+  const leftX = 40, rightX = 380;
+  doc.text("Pegawai Yang Dinilai,", leftX, finalY);
+  doc.text("Yuyun Wulandari, S.Pd.I", leftX, finalY + 85);
+  doc.text("NIP. 199207012020122008", leftX, finalY + 100);
+
+  doc.text("Mengetahui,", rightX, finalY - 15);
+  doc.text("Pejabat Penilai Kerja", rightX, finalY);
+  doc.text("${ttd_pengirim}", rightX, finalY + 45);
+  doc.text("M. Arskal Salim GP", rightX, finalY + 85);
+  doc.text("NIP. 1970090119961003", rightX, finalY + 100);
 
   doc.save("Laporan_Overview.pdf");
 }
