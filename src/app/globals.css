@@ -7,7 +7,7 @@
   --color-indigo-300: #73b9b7;
   --color-indigo-400: #52a8a5;
   --color-indigo-500: #329693;
-  --color-indigo-600: #158684;
+  --color-indigo-600: #82B29A;
   --color-indigo-700: #116b6a;
   --color-indigo-800: #0d5050;
   --color-indigo-900: #093635;
@@ -18,12 +18,12 @@
   --color-teal-300: #f8df8d;
   --color-teal-400: #f5d366;
   --color-teal-500: #f3c73f;
-  --color-teal-600: #FDB200;
+  --color-teal-600: #F4A261;
   --color-teal-700: #c58a00;
   --color-teal-800: #8e6300;
   --color-teal-900: #583d00;
 
-  --font-sans: var(--font-sora), system-ui, sans-serif;
+  --font-sans: var(--font-quicksand), system-ui, sans-serif;
 }
 
 body {

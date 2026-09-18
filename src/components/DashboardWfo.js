@@ -49,7 +49,7 @@ export default function DashboardWfo({ tasks, refreshData, updateTaskLocal, dele
         <div className="flex flex-col md:flex-row gap-3 md:gap-4 items-end mb-6 pb-6 border-b border-slate-200/80">
           <div className="w-full md:w-1/4">
             <label className="block text-xs font-semibold text-slate-700 mb-1.5 ml-1">Filter Bulan</label>
-            <select value={filterBulan} onChange={(e) => setFilterBulan(e.target.value)} className="input-field w-full p-2.5 sm:p-3 bg-slate-50 lg:bg-white border border-slate-200 rounded-md focus:ring-2 focus:ring-[#158684] outline-none text-slate-700 text-sm cursor-pointer transition-all hover:border-[#158684]/50">
+            <select value={filterBulan} onChange={(e) => setFilterBulan(e.target.value)} className="input-field w-full p-2.5 sm:p-3 bg-slate-50 lg:bg-white border border-slate-200 rounded-md focus:ring-2 focus:ring-[#82B29A] outline-none text-slate-700 text-sm cursor-pointer transition-all hover:border-[#82B29A]/50">
               <option value="Semua">Semua Bulan</option>
               <option value="01">Januari</option>
               <option value="02">Februari</option>
@@ -67,7 +67,7 @@ export default function DashboardWfo({ tasks, refreshData, updateTaskLocal, dele
           </div>
           <div className="w-full md:w-1/2">
             <label className="block text-xs font-semibold text-slate-700 mb-1.5 ml-1">Filter SKP</label>
-            <select value={filterSkp} onChange={(e) => setFilterSkp(e.target.value)} className="input-field w-full p-2.5 sm:p-3 bg-slate-50 lg:bg-white border border-slate-200 rounded-md focus:ring-2 focus:ring-[#158684] outline-none text-slate-700 text-sm cursor-pointer transition-all hover:border-[#158684]/50">
+            <select value={filterSkp} onChange={(e) => setFilterSkp(e.target.value)} className="input-field w-full p-2.5 sm:p-3 bg-slate-50 lg:bg-white border border-slate-200 rounded-md focus:ring-2 focus:ring-[#82B29A] outline-none text-slate-700 text-sm cursor-pointer transition-all hover:border-[#82B29A]/50">
               <option value="Semua">Semua SKP</option>
               {SKP_LIST.map((skp) => (
                 <option key={skp} value={skp}>{skp}</option>
@@ -76,13 +76,13 @@ export default function DashboardWfo({ tasks, refreshData, updateTaskLocal, dele
           </div>
 
           <div className="w-full md:w-auto ml-auto mt-2 md:mt-0 flex flex-row gap-2">
-            <button onClick={onOpenForm} className="w-full text-white font-extrabold py-2.5 px-5 rounded-md transition-all shadow-md flex justify-center items-center gap-2 text-sm sm:text-base whitespace-nowrap" style={{backgroundColor: "#158684"}}>
+            <button onClick={onOpenForm} className="w-full text-white font-extrabold py-2.5 px-5 rounded-md transition-all shadow-md flex justify-center items-center gap-2 text-sm sm:text-base whitespace-nowrap" style={{backgroundColor: "#82B29A"}}>
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
               </svg>
               <span>Tambah Kegiatan</span>
             </button>
-            <button onClick={() => generatePdfWfo(filteredTasks, filterBulan)} className="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-2.5 px-5 rounded-md transition-all shadow-md flex justify-center items-center gap-2 text-sm sm:text-base whitespace-nowrap">
+            <button onClick={() => generatePdfWfo(filteredTasks, filterBulan)} className="w-full bg-[#E5B3BB] hover:bg-[#D49BA5] text-white font-bold py-2.5 px-5 rounded-md transition-all shadow-md flex justify-center items-center gap-2 text-sm sm:text-base whitespace-nowrap">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
               </svg>
@@ -144,7 +144,7 @@ export default function DashboardWfo({ tasks, refreshData, updateTaskLocal, dele
                           </td>
                           <td className="px-4 py-3 text-center align-top max-w-[150px]">
                             {evUrl && evUrl !== '#' ? (
-                              <a href={evUrl} target="_blank" className="inline-flex items-center gap-1 text-xs font-semibold text-indigo-600 bg-indigo-50 px-2 py-1.5 rounded hover:bg-indigo-100 transition-colors w-full justify-center whitespace-nowrap" title="Buka tautan">
+                              <a href={evUrl} target="_blank" className="inline-flex items-center gap-1 text-xs font-semibold text-[#88A4C4] bg-[#88A4C4]/10 px-2 py-1.5 rounded hover:bg-[#88A4C4]/20 transition-colors w-full justify-center whitespace-nowrap" title="Buka tautan">
                                 {isLink ? (
                                   <>
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>
@@ -166,7 +166,7 @@ export default function DashboardWfo({ tasks, refreshData, updateTaskLocal, dele
                               <button
                                 onClick={() => setEditingTask(item)}
                                 title="Edit"
-                                className="text-[#158684] bg-[#158684]/10 hover:bg-[#158684]/20 p-1.5 rounded transition-colors"
+                                className="text-[#82B29A] bg-[#82B29A]/10 hover:bg-[#82B29A]/20 p-1.5 rounded transition-colors"
                               >
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                   <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -221,15 +221,15 @@ export default function DashboardWfo({ tasks, refreshData, updateTaskLocal, dele
                       <div className="flex items-start justify-between gap-2 mb-2">
                         <div className="flex-1 min-w-0">
                           {index === 0 && (
-                            <span className="inline-flex text-[10px] font-bold text-white px-2 py-0.5 rounded-full mr-1" style={{ backgroundColor: "#158684" }}>
+                            <span className="inline-flex text-[10px] font-bold text-white px-2 py-0.5 rounded-full mr-1" style={{ backgroundColor: "#82B29A" }}>
                               {group.tanggal}
                             </span>
                           )}
                           <span className="text-[10px] text-slate-500 leading-tight block mt-1 truncate">{group.skp}</span>
                         </div>
                         <div className="flex gap-1.5 flex-shrink-0">
-                          <button onClick={() => setEditingTask(item)} className="p-1.5 rounded-lg border border-[#158684]/20 bg-[#158684]/10 hover:bg-[#158684]/20 transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 text-[#158684]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                          <button onClick={() => setEditingTask(item)} className="p-1.5 rounded-lg border border-[#82B29A]/20 bg-[#82B29A]/10 hover:bg-[#82B29A]/20 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 text-[#82B29A]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                               <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                             </svg>
                           </button>
@@ -244,7 +244,7 @@ export default function DashboardWfo({ tasks, refreshData, updateTaskLocal, dele
                       <div className="flex items-center gap-2">
                         <span className="text-xs font-semibold text-slate-800 line-clamp-1">{item.skp}</span>
                         {evUrl && evUrl !== '#' && (
-                          <a href={evUrl} target="_blank" className="text-[10px] font-semibold px-2 py-1 rounded-md bg-indigo-50 text-indigo-600 truncate flex items-center gap-1" title="Buka tautan">
+                          <a href={evUrl} target="_blank" className="text-[10px] font-semibold px-2 py-1 rounded-md bg-[#88A4C4]/10 text-[#88A4C4] truncate flex items-center gap-1" title="Buka tautan">
                             {isLink ? (
                               <>
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>

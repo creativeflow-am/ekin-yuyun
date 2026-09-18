@@ -1,9 +1,9 @@
-import { Sora } from "next/font/google";
+import { Quicksand } from "next/font/google";
 import ClientLayout from "@/components/ClientLayout";
 import "./globals.css";
 
-const sora = Sora({
-  variable: "--font-sora",
+const quicksand = Quicksand({
+  variable: "--font-quicksand",
   subsets: ["latin"],
 });
 
@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="id">
       <head>
-        <meta name="theme-color" content="#158684" />
+        <meta name="theme-color" content="#82B29A" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Jurnal Yuyun" />
@@ -33,7 +33,7 @@ export default function RootLayout({ children }) {
         <link rel="apple-touch-icon" href="/logo.svg" />
         <link rel="manifest" href="/manifest.json" />
       </head>
-      <body className={`${sora.variable} antialiased`}>
+      <body className={`${quicksand.variable} antialiased`}>
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>

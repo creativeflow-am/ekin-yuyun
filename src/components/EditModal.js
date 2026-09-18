@@ -109,7 +109,7 @@ export default function EditModal({ task, onClose, refreshData, updateTaskLocal 
           <div>
             <label className="block text-sm font-semibold text-slate-700 mb-1.5">Tanggal</label>
             <input type="date" name="tanggal" required value={formData.tanggal} onChange={handleChange}
-              className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md focus:ring-2 focus:ring-[#158684]/30 focus:border-[#158684] outline-none text-slate-700 text-sm" />
+              className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md focus:ring-2 focus:ring-[#82B29A]/30 focus:border-[#82B29A] outline-none text-slate-700 text-sm" />
           </div>
 
           {/* Jenis Kegiatan */}
@@ -117,8 +117,8 @@ export default function EditModal({ task, onClose, refreshData, updateTaskLocal 
             <label className="block text-sm font-semibold text-slate-700 mb-2">Jenis Kegiatan</label>
             <div className="grid grid-cols-2 gap-2">
               {["WFO", "WFA"].map(tipe => (
-                <label key={tipe} className={`flex items-center gap-2 p-2.5 rounded-md border-2 cursor-pointer transition-all ${formData.tipeKerja === tipe ? 'border-[#158684] bg-[#158684]/5' : 'border-slate-200'}`}>
-                  <input type="radio" name="tipeKerja" value={tipe} checked={formData.tipeKerja === tipe} onChange={handleChange} className="accent-[#158684]" />
+                <label key={tipe} className={`flex items-center gap-2 p-2.5 rounded-md border-2 cursor-pointer transition-all ${formData.tipeKerja === tipe ? 'border-[#82B29A] bg-[#82B29A]/5' : 'border-slate-200'}`}>
+                  <input type="radio" name="tipeKerja" value={tipe} checked={formData.tipeKerja === tipe} onChange={handleChange} className="accent-[#82B29A]" />
                   <span className="text-sm font-bold text-slate-800">{tipe}</span>
                 </label>
               ))}
@@ -131,12 +131,12 @@ export default function EditModal({ task, onClose, refreshData, updateTaskLocal 
               <div>
                 <label className="block text-xs font-semibold text-slate-600 mb-1">Jam Masuk</label>
                 <input type="time" name="jamMasuk" required value={formData.jamMasuk} onChange={handleChange}
-                  className="w-full p-2 bg-white border border-slate-200 rounded-md focus:ring-2 focus:ring-[#158684]/30 focus:border-[#158684] outline-none text-sm" />
+                  className="w-full p-2 bg-white border border-slate-200 rounded-md focus:ring-2 focus:ring-[#82B29A]/30 focus:border-[#82B29A] outline-none text-sm" />
               </div>
               <div>
                 <label className="block text-xs font-semibold text-slate-600 mb-1">Jam Pulang</label>
                 <input type="time" name="jamPulang" required value={formData.jamPulang} onChange={handleChange}
-                  className="w-full p-2 bg-white border border-slate-200 rounded-md focus:ring-2 focus:ring-[#158684]/30 focus:border-[#158684] outline-none text-sm" />
+                  className="w-full p-2 bg-white border border-slate-200 rounded-md focus:ring-2 focus:ring-[#82B29A]/30 focus:border-[#82B29A] outline-none text-sm" />
               </div>
             </div>
           )}
@@ -145,7 +145,7 @@ export default function EditModal({ task, onClose, refreshData, updateTaskLocal 
           <div>
             <label className="block text-sm font-semibold text-slate-700 mb-1.5">Butir Kegiatan SKP</label>
             <select name="skp" required value={formData.skp} onChange={handleChange}
-              className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md focus:ring-2 focus:ring-[#158684]/30 focus:border-[#158684] outline-none text-slate-700 text-sm">
+              className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md focus:ring-2 focus:ring-[#82B29A]/30 focus:border-[#82B29A] outline-none text-slate-700 text-sm">
               <option value="">-- Pilih Butir SKP --</option>
               {SKP_LIST.map(skp => (
                 <option key={skp} value={skp}>{skp}</option>
@@ -157,7 +157,7 @@ export default function EditModal({ task, onClose, refreshData, updateTaskLocal 
           <div>
             <label className="block text-sm font-semibold text-slate-700 mb-1.5">Deskripsi / Output</label>
             <textarea name="deskripsi" required value={formData.deskripsi} onChange={handleChange} rows="3"
-              className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md focus:ring-2 focus:ring-[#158684]/30 focus:border-[#158684] outline-none text-slate-700 text-sm resize-none"></textarea>
+              className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md focus:ring-2 focus:ring-[#82B29A]/30 focus:border-[#82B29A] outline-none text-slate-700 text-sm resize-none"></textarea>
           </div>
 
           {/* Evidence URL (editable) */}
@@ -165,7 +165,7 @@ export default function EditModal({ task, onClose, refreshData, updateTaskLocal 
             <label className="block text-sm font-semibold text-slate-700 mb-1.5">Bukti / Evidence URL (opsional)</label>
             <input type="text" name="evidence" value={formData.evidence} onChange={handleChange}
               placeholder="https://drive.google.com/..."
-              className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md focus:ring-2 focus:ring-[#158684]/30 focus:border-[#158684] outline-none text-slate-700 text-sm" />
+              className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md focus:ring-2 focus:ring-[#82B29A]/30 focus:border-[#82B29A] outline-none text-slate-700 text-sm" />
           </div>
         </form>
 
@@ -184,7 +184,7 @@ export default function EditModal({ task, onClose, refreshData, updateTaskLocal 
             onClick={handleSubmit}
             disabled={isSubmitting}
             className="flex-1 py-2.5 px-4 rounded-md text-white font-bold text-sm disabled:opacity-60 transition-colors flex items-center justify-center gap-2"
-            style={{ backgroundColor: "#158684" }}
+            style={{ backgroundColor: "#82B29A" }}
           >
             {isSubmitting ? (
               <>

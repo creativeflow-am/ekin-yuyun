@@ -42,7 +42,7 @@ export default function Sidebar({ activeTab, setActiveTab, isOpen }) {
             <img src="/logo.svg" alt="Logo Jurnal Yuyun" className="h-full w-full object-cover" />
           </div>
           <div>
-            <h2 className="text-xl font-extrabold" style={{ color: "#158684" }}>Jurnal Yuyun</h2>
+            <h2 className="text-xl font-extrabold" style={{ color: "#82B29A" }}>Jurnal Yuyun</h2>
             <p className="text-xs text-slate-500 font-medium">Humas Ditjen Pendis</p>
           </div>
         </div>
@@ -60,7 +60,7 @@ export default function Sidebar({ activeTab, setActiveTab, isOpen }) {
                 onClick={setActiveTab}
                 className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium rounded-none transition-colors border-l-4 ${
                   isActive
-                    ? "border-[#158684] bg-[#158684]/10 text-[#158684]" 
+                    ? "border-[#82B29A] bg-[#82B29A]/10 text-[#82B29A]" 
                     : "border-transparent text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                 }`}
               >
@@ -73,7 +73,7 @@ export default function Sidebar({ activeTab, setActiveTab, isOpen }) {
         
         <div className="mt-auto pt-6 border-t border-slate-100">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-md bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center text-indigo-600 font-bold border border-slate-300">
+            <div className="w-10 h-10 rounded-md bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center text-[#88A4C4] font-bold border border-slate-300">
               YW
             </div>
             <div>
