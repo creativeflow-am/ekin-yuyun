@@ -50,25 +50,20 @@ export async function generatePdfWfo(data, filterBulan) {
 
       let no = 1;
       pdfGrouped.forEach(group => {
-          let len = group.items.length;
-          group.items.forEach((item, index) => {
+          group.items.forEach((item) => {
               let evUrl = item.evidence_url || item.evidence;
               let evidenceObj = {
                   content: (evUrl && evUrl !== '#' && evUrl !== 'Tersimpan di Drive') ? evUrl : '-',
                   styles: (evUrl && evUrl !== '#' && evUrl !== 'Tersimpan di Drive') ? { textColor: [37, 99, 235], halign: 'left' } : { halign: 'center' }
               };
 
-              if (index === 0) {
-                  tableBody.push([
-                      { rowSpan: len, content: String(no++), styles: { valign: 'middle', halign: 'center' } },
-                      { rowSpan: len, content: group.tanggal, styles: { valign: 'middle', halign: 'center' } },
-                      { rowSpan: len, content: group.skp, styles: { valign: 'middle' } },
-                      item.deskripsi,
-                      evidenceObj
-                  ]);
-              } else {
-                  tableBody.push([item.deskripsi, evidenceObj]);
-              }
+              tableBody.push([
+                  { content: String(no++), styles: { valign: 'middle', halign: 'center' } },
+                  { content: group.tanggal, styles: { valign: 'middle', halign: 'center' } },
+                  { content: group.skp, styles: { valign: 'middle' } },
+                  item.deskripsi,
+                  evidenceObj
+              ]);
           });
       });
   }
@@ -83,7 +78,7 @@ export async function generatePdfWfo(data, filterBulan) {
       headStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold', halign: 'center', valign: 'middle', lineWidth: 1, lineColor: [0, 0, 0] },
       alternateRowStyles: { fillColor: [255, 255, 255] },
       styles: { fontSize: 10, cellPadding: 3, lineColor: [0, 0, 0], lineWidth: 1, textColor: [0, 0, 0] },
-      rowPageBreak: 'avoid',
+      rowPageBreak: 'auto',
       columnStyles: {
           0: { cellWidth: 25, halign: 'center' },
           1: { cellWidth: 65, halign: 'center' },
@@ -168,13 +163,7 @@ export async function generatePdfWfa(data, filterBulan) {
   let tableBody = [];
   let no = 1;
   pdfGroupedWfa.forEach(dateGroup => {
-      let isFirstDate = true;
-      let dateRowSpan = dateGroup.totalItems;
-
       dateGroup.skpGroups.forEach(skpGroup => {
-          let isFirstSkp = true;
-          let skpRowSpan = skpGroup.items.length;
-
           skpGroup.items.forEach(item => {
               let evUrl = item.evidence_url || item.evidence;
               let evidenceObj = {
@@ -182,21 +171,15 @@ export async function generatePdfWfa(data, filterBulan) {
                   styles: (evUrl && evUrl !== '#' && evUrl !== 'Tersimpan di Drive') ? { textColor: [37, 99, 235], halign: 'left' } : { halign: 'center' }
               };
 
-              let row = [];
-              if (isFirstDate) {
-                  row.push({ rowSpan: dateRowSpan, content: String(no++), styles: { valign: 'middle', halign: 'center' } });
-                  row.push({ rowSpan: dateRowSpan, content: dateGroup.tanggal, styles: { valign: 'middle', halign: 'center' } });
-                  row.push({ rowSpan: dateRowSpan, content: dateGroup.jam_masuk || "-", styles: { valign: 'middle', halign: 'center' } });
-                  row.push({ rowSpan: dateRowSpan, content: dateGroup.jam_pulang || "-", styles: { valign: 'middle', halign: 'center' } });
-                  isFirstDate = false;
-              }
-              if (isFirstSkp) {
-                  row.push({ rowSpan: skpRowSpan, content: item.skp, styles: { valign: 'middle' } });
-                  isFirstSkp = false;
-              }
-              row.push(item.deskripsi);
-              row.push(evidenceObj);
-              tableBody.push(row);
+              tableBody.push([
+                  { content: String(no++), styles: { valign: 'middle', halign: 'center' } },
+                  { content: dateGroup.tanggal, styles: { valign: 'middle', halign: 'center' } },
+                  { content: dateGroup.jam_masuk || "-", styles: { valign: 'middle', halign: 'center' } },
+                  { content: dateGroup.jam_pulang || "-", styles: { valign: 'middle', halign: 'center' } },
+                  { content: item.skp, styles: { valign: 'middle' } },
+                  item.deskripsi,
+                  evidenceObj
+              ]);
           });
       });
   });
@@ -211,7 +194,7 @@ export async function generatePdfWfa(data, filterBulan) {
       headStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold', halign: 'center', valign: 'middle', lineWidth: 1, lineColor: [0, 0, 0] },
       alternateRowStyles: { fillColor: [255, 255, 255] },
       styles: { fontSize: 10, cellPadding: 3, minCellHeight: 20, lineColor: [0, 0, 0], lineWidth: 1, textColor: [0, 0, 0] },
-      rowPageBreak: 'avoid',
+      rowPageBreak: 'auto',
       columnStyles: {
           0: { cellWidth: 25, halign: 'center' },
           1: { cellWidth: 65, halign: 'center' },
@@ -285,26 +268,21 @@ export async function generatePdfOverview(data, filterBulan) {
   let tableData = [];
   let no = 1;
   pdfGrouped.forEach(group => {
-      let len = group.items.length;
-      group.items.forEach((item, index) => {
+      group.items.forEach((item) => {
           let evUrl = item.evidence_url || item.evidence;
           let evidenceObj = {
               content: (evUrl && evUrl !== '#' && evUrl !== 'Tersimpan di Drive') ? evUrl : '-',
               styles: (evUrl && evUrl !== '#' && evUrl !== 'Tersimpan di Drive') ? { textColor: [37, 99, 235], halign: 'left' } : { halign: 'center' }
           };
           
-          if (index === 0) {
-              tableData.push([
-                  { rowSpan: len, content: String(no++), styles: { valign: 'middle', halign: 'center' } },
-                  { rowSpan: len, content: group.tanggal, styles: { valign: 'middle', halign: 'center' } },
-                  { rowSpan: len, content: group.tipe, styles: { valign: 'middle', halign: 'center' } },
-                  { rowSpan: len, content: group.skp, styles: { valign: 'middle' } },
-                  item.deskripsi,
-                  evidenceObj
-              ]);
-          } else {
-              tableData.push([item.deskripsi, evidenceObj]);
-          }
+          tableData.push([
+              { content: String(no++), styles: { valign: 'middle', halign: 'center' } },
+              { content: group.tanggal, styles: { valign: 'middle', halign: 'center' } },
+              { content: group.tipe, styles: { valign: 'middle', halign: 'center' } },
+              { content: group.skp, styles: { valign: 'middle' } },
+              item.deskripsi,
+              evidenceObj
+          ]);
       });
   });
 
@@ -318,7 +296,7 @@ export async function generatePdfOverview(data, filterBulan) {
       headStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold', halign: 'center', valign: 'middle', lineWidth: 1, lineColor: [0, 0, 0] },
       alternateRowStyles: { fillColor: [255, 255, 255] },
       styles: { fontSize: 10, cellPadding: 3, lineColor: [0, 0, 0], lineWidth: 1, textColor: [0, 0, 0] },
-      rowPageBreak: 'avoid',
+      rowPageBreak: 'auto',
       columnStyles: {
           0: { cellWidth: 20, halign: 'center' },
           1: { cellWidth: 65, halign: 'center' },
