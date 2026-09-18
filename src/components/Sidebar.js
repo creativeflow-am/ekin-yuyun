@@ -54,7 +54,7 @@ export default function Sidebar({ activeTab, setActiveTab, isOpen }) {
               key={item.id}
               onClick={setActiveTab}
               className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium rounded-none transition-colors border-l-4 ${
-                activeTab === item.id || (activeTab === '/tambah' && item.id.includes(typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('type') : ''))
+                activeTab === item.id
                   ? "border-[#158684] bg-[#158684]/10 text-[#158684]" 
                   : "border-transparent text-slate-600 hover:bg-slate-50 hover:text-slate-900"
               }`}

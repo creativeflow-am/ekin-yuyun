@@ -11,11 +11,13 @@ function TambahContent() {
   const type = searchParams.get("type") || "wfo";
   const { refreshData, addTaskLocal } = useTasks();
 
-  const handleClose = () => {
-    if (type === "wfa") {
-      router.push("/wfa");
+  const handleClose = (savedType) => {
+    if (typeof savedType === 'string') {
+      if (savedType === "WFA") router.push("/wfa");
+      else router.push("/wfo");
     } else {
-      router.push("/wfo");
+      if (type === "wfa") router.push("/wfa");
+      else router.push("/wfo");
     }
   };
 

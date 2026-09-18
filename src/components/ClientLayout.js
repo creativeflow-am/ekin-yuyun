@@ -61,15 +61,15 @@ export default function ClientLayout({ children }) {
             </svg>
             <span className="text-[10px] font-semibold tracking-wide">Overview</span>
           </Link>
-          <Link href="/wfo" className={`flex-1 pt-2 pb-3 px-2 flex flex-col items-center gap-1 transition-colors relative ${pathname === '/wfo' || (pathname === '/tambah' && typeof window !== 'undefined' && window.location.search.includes('type=wfo')) ? 'text-[#158684]' : 'text-slate-400'}`}>
-            <span className={`absolute top-0 left-3 right-3 h-0.5 rounded-b-full transition-colors ${pathname === '/wfo' || (pathname === '/tambah' && typeof window !== 'undefined' && window.location.search.includes('type=wfo')) ? 'bg-[#158684]' : 'bg-transparent'}`}></span>
+          <Link href="/wfo" className={`flex-1 pt-2 pb-3 px-2 flex flex-col items-center gap-1 transition-colors relative ${pathname === '/wfo' ? 'text-[#158684]' : 'text-slate-400'}`}>
+            <span className={`absolute top-0 left-3 right-3 h-0.5 rounded-b-full transition-colors ${pathname === '/wfo' ? 'bg-[#158684]' : 'bg-transparent'}`}></span>
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
             </svg>
             <span className="text-[10px] font-semibold tracking-wide">WFO</span>
           </Link>
-          <Link href="/wfa" className={`flex-1 pt-2 pb-3 px-2 flex flex-col items-center gap-1 transition-colors relative ${pathname === '/wfa' || (pathname === '/tambah' && typeof window !== 'undefined' && window.location.search.includes('type=wfa')) ? 'text-[#158684]' : 'text-slate-400'}`}>
-            <span className={`absolute top-0 left-3 right-3 h-0.5 rounded-b-full transition-colors ${pathname === '/wfa' || (pathname === '/tambah' && typeof window !== 'undefined' && window.location.search.includes('type=wfa')) ? 'bg-[#158684]' : 'bg-transparent'}`}></span>
+          <Link href="/wfa" className={`flex-1 pt-2 pb-3 px-2 flex flex-col items-center gap-1 transition-colors relative ${pathname === '/wfa' ? 'text-[#158684]' : 'text-slate-400'}`}>
+            <span className={`absolute top-0 left-3 right-3 h-0.5 rounded-b-full transition-colors ${pathname === '/wfa' ? 'bg-[#158684]' : 'bg-transparent'}`}></span>
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
             </svg>

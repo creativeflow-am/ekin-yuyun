@@ -103,7 +103,7 @@ export default function TaskForm({ isOpen, onClose, refreshData, addTaskLocal, d
       }
       
       setTimeout(() => {
-        onClose();
+        onClose(formData.tipeKerja);
         setTimeout(() => setShowSuccessOverlay(false), 300); // reset after animation
       }, 700);
 
