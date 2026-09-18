@@ -2,11 +2,14 @@ import { useState } from "react";
 import { generatePdfWfo } from "@/lib/pdf";
 import { SKP_LIST } from "@/lib/constants";
 import { deleteTask } from "@/lib/data";
+import EditModal from "@/components/EditModal";
 
 export default function DashboardWfo({ tasks, refreshData, onOpenForm }) {
   const [filterBulan, setFilterBulan] = useState("Semua");
   const [filterSkp, setFilterSkp] = useState("Semua");
   const [deletingId, setDeletingId] = useState(null);
+  const [editingTask, setEditingTask] = useState(null);
+  const [pdfLoading, setPdfLoading] = useState(false);
 
   const handleDelete = async (id) => {
     if (!confirm("Hapus data ini?")) return;
@@ -76,11 +79,23 @@ export default function DashboardWfo({ tasks, refreshData, onOpenForm }) {
               </svg>
               <span>Tambah Kegiatan</span>
             </button>
-            <button onClick={() => generatePdfWfo(filteredTasks, filterBulan)} className="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-2.5 px-5 rounded-md transition-all shadow-md flex justify-center items-center gap-2 text-sm sm:text-base whitespace-nowrap">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
-              </svg>
-              <span>Unduh PDF</span>
+            <button
+              onClick={async () => {
+                setPdfLoading(true);
+                try { await generatePdfWfo(filteredTasks, filterBulan); }
+                finally { setPdfLoading(false); }
+              }}
+              disabled={pdfLoading}
+              className="w-full bg-slate-700 hover:bg-slate-800 disabled:opacity-60 text-white font-bold py-2.5 px-5 rounded-md transition-all shadow-md flex justify-center items-center gap-2 text-sm sm:text-base whitespace-nowrap"
+            >
+              {pdfLoading ? (
+                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              )}
+              <span>{pdfLoading ? "Memproses..." : "Unduh PDF"}</span>
             </button>
           </div>
         </div>
@@ -148,7 +163,16 @@ export default function DashboardWfo({ tasks, refreshData, onOpenForm }) {
                             )}
                           </td>
                           <td className="px-4 py-3 text-center align-top">
-                            <div className="flex justify-center items-center gap-2">
+                            <div className="flex justify-center items-center gap-1.5">
+                              <button
+                                onClick={() => setEditingTask(item)}
+                                title="Edit"
+                                className="text-[#158684] bg-[#158684]/10 hover:bg-[#158684]/20 p-1.5 rounded transition-colors"
+                              >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                </svg>
+                              </button>
                               <button
                                 onClick={() => handleDelete(item.id)}
                                 disabled={deletingId === item.id}
@@ -232,5 +256,14 @@ export default function DashboardWfo({ tasks, refreshData, onOpenForm }) {
         </div>
       </div>
     </div>
+
+    {/* Edit Modal */}
+    {editingTask && (
+      <EditModal
+        task={editingTask}
+        onClose={() => setEditingTask(null)}
+        refreshData={refreshData}
+      />
+    )}
   );
 }

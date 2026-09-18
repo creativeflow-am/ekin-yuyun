@@ -80,7 +80,7 @@ export default function TaskForm({ isOpen, onClose, refreshData, defaultTipeKerj
       };
 
       await addTask(taskPayload);
-      showToast("✓ Data berhasil disimpan!");
+      showToast("Data berhasil disimpan!");
       await refreshData();
       
       setTimeout(() => {
@@ -192,7 +192,14 @@ export default function TaskForm({ isOpen, onClose, refreshData, defaultTipeKerj
                 accept="image/*,application/pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
                 className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#158684]/10 file:text-[#158684] hover:file:bg-[#158684]/20 cursor-pointer"
               />
-              {file && <p className="text-xs text-slate-500 mt-1.5 font-medium">📎 {file.name} ({(file.size/1024).toFixed(0)} KB)</p>}
+              {file && (
+                <p className="flex items-center gap-1.5 text-xs text-slate-500 mt-2 font-medium">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+                  </svg>
+                  {file.name} ({(file.size/1024).toFixed(0)} KB)
+                </p>
+              )}
               <p className="text-xs text-slate-400 mt-1">Maks. 10MB. File akan diunggah ke Google Drive.</p>
             </div>
           )}
@@ -213,10 +220,22 @@ export default function TaskForm({ isOpen, onClose, refreshData, defaultTipeKerj
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full font-extrabold py-3.5 px-6 rounded-md transition-all shadow-md text-white disabled:opacity-60 text-base"
+          className="w-full font-extrabold py-3.5 px-6 rounded-md transition-all shadow-md text-white disabled:opacity-60 text-base flex items-center justify-center gap-2"
           style={{ backgroundColor: isSubmitting ? "#0d6462" : "#158684" }}
         >
-          {isSubmitting ? "Menyimpan..." : "💾 Simpan Jurnal"}
+          {isSubmitting ? (
+            <>
+              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+              Menyimpan...
+            </>
+          ) : (
+            <>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+              </svg>
+              Simpan Jurnal
+            </>
+          )}
         </button>
       </form>
     </div>

@@ -6,6 +6,7 @@ import DashboardWfo from "@/components/DashboardWfo";
 import DashboardWfa from "@/components/DashboardWfa";
 import Overview from "@/components/Overview";
 import TaskForm from "@/components/TaskForm";
+import { SkeletonDashboard } from "@/components/Skeleton";
 import { getTasks } from "@/lib/data";
 
 export default function Home() {
@@ -101,9 +102,7 @@ export default function Home() {
         {/* Scrollable Content Area */}
         <main className="flex-1 overflow-y-auto pt-20 lg:pt-8 px-4 pb-28 sm:px-8 lg:pb-10 w-full z-10">
           {isLoading ? (
-            <div className="flex justify-center items-center h-full">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#158684]"></div>
-            </div>
+            <SkeletonDashboard />
           ) : (
             renderContent()
           )}
