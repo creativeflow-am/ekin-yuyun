@@ -43,41 +43,27 @@ export default function DashboardWfo({ tasks, refreshData, onOpenForm }) {
       <div className="w-full">
         {/* Filters */}
         <div className="flex flex-col md:flex-row gap-3 md:gap-4 items-end mb-6 pb-6 border-b border-slate-200/80">
-          <div className="w-full md:w-auto flex-1 overflow-hidden flex flex-col">
+          <div className="w-full md:w-1/4">
             <label className="block text-xs font-semibold text-slate-700 mb-1.5 ml-1">Filter Bulan</label>
-            <div className="flex overflow-x-auto gap-2 pb-2" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-              {[
-                { val: "Semua", label: "Semua" },
-                { val: "01", label: "Januari" },
-                { val: "02", label: "Februari" },
-                { val: "03", label: "Maret" },
-                { val: "04", label: "April" },
-                { val: "05", label: "Mei" },
-                { val: "06", label: "Juni" },
-                { val: "07", label: "Juli" },
-                { val: "08", label: "Agustus" },
-                { val: "09", label: "September" },
-                { val: "10", label: "Oktober" },
-                { val: "11", label: "November" },
-                { val: "12", label: "Desember" }
-              ].map(m => (
-                <button
-                  key={m.val}
-                  onClick={() => setFilterBulan(m.val)}
-                  className={`px-4 py-2 rounded-full text-xs font-semibold transition-all flex-shrink-0 ${
-                    filterBulan === m.val
-                      ? "bg-[#158684] text-white shadow-md border border-[#158684]"
-                      : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-slate-300"
-                  }`}
-                >
-                  {m.label}
-                </button>
-              ))}
-            </div>
+            <select value={filterBulan} onChange={(e) => setFilterBulan(e.target.value)} className="input-field w-full p-2.5 sm:p-3 bg-slate-50 lg:bg-white border border-slate-200 rounded-md focus:ring-2 focus:ring-[#158684] outline-none text-slate-700 text-sm cursor-pointer transition-all hover:border-[#158684]/50">
+              <option value="Semua">Semua Bulan</option>
+              <option value="01">Januari</option>
+              <option value="02">Februari</option>
+              <option value="03">Maret</option>
+              <option value="04">April</option>
+              <option value="05">Mei</option>
+              <option value="06">Juni</option>
+              <option value="07">Juli</option>
+              <option value="08">Agustus</option>
+              <option value="09">September</option>
+              <option value="10">Oktober</option>
+              <option value="11">November</option>
+              <option value="12">Desember</option>
+            </select>
           </div>
-          <div className="w-full md:w-1/3">
+          <div className="w-full md:w-1/2">
             <label className="block text-xs font-semibold text-slate-700 mb-1.5 ml-1">Filter SKP</label>
-            <select value={filterSkp} onChange={(e) => setFilterSkp(e.target.value)} className="input-field w-full p-2.5 sm:p-3 bg-slate-50 lg:bg-white border border-slate-200 rounded-full focus:ring-2 focus:ring-[#158684] outline-none text-slate-700 text-xs font-medium cursor-pointer h-[34px]">
+            <select value={filterSkp} onChange={(e) => setFilterSkp(e.target.value)} className="input-field w-full p-2.5 sm:p-3 bg-slate-50 lg:bg-white border border-slate-200 rounded-md focus:ring-2 focus:ring-[#158684] outline-none text-slate-700 text-sm cursor-pointer transition-all hover:border-[#158684]/50">
               <option value="Semua">Semua SKP</option>
               {SKP_LIST.map((skp) => (
                 <option key={skp} value={skp}>{skp}</option>
@@ -154,8 +140,18 @@ export default function DashboardWfo({ tasks, refreshData, onOpenForm }) {
                           </td>
                           <td className="px-4 py-3 text-center align-top max-w-[150px]">
                             {evUrl && evUrl !== '#' ? (
-                              <a href={evUrl} target="_blank" className="inline-flex items-center gap-1 text-xs font-semibold text-indigo-600 bg-indigo-50 px-2 py-1 rounded hover:bg-indigo-100 truncate w-full block" title={evUrl}>
-                                {isLink ? "🔗" : "📁"} {evUrl.replace(/^https?:\/\//, '')}
+                              <a href={evUrl} target="_blank" className="inline-flex items-center gap-1 text-xs font-semibold text-indigo-600 bg-indigo-50 px-2 py-1.5 rounded hover:bg-indigo-100 transition-colors w-full justify-center whitespace-nowrap" title="Buka tautan">
+                                {isLink ? (
+                                  <>
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>
+                                    Lihat Tautan
+                                  </>
+                                ) : (
+                                  <>
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" /></svg>
+                                    Lihat Berkas
+                                  </>
+                                )}
                               </a>
                             ) : (
                               "-"
@@ -239,8 +235,18 @@ export default function DashboardWfo({ tasks, refreshData, onOpenForm }) {
                       <div className="flex items-center gap-2">
                         <span className="text-xs font-semibold text-slate-800 line-clamp-1">{item.skp}</span>
                         {evUrl && evUrl !== '#' && (
-                          <a href={evUrl} target="_blank" className="text-[10px] font-medium px-2 py-0.5 rounded bg-slate-100 text-slate-600 truncate block max-w-[200px]" title={evUrl}>
-                            {isLink ? "🔗" : "📁"} {evUrl.replace(/^https?:\/\//, '')}
+                          <a href={evUrl} target="_blank" className="text-[10px] font-semibold px-2 py-1 rounded-md bg-indigo-50 text-indigo-600 truncate flex items-center gap-1" title="Buka tautan">
+                            {isLink ? (
+                              <>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>
+                                Tautan
+                              </>
+                            ) : (
+                              <>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" /></svg>
+                                Berkas
+                              </>
+                            )}
                           </a>
                         )}
                       </div>

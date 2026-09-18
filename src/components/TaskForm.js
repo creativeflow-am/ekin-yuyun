@@ -93,12 +93,9 @@ export default function TaskForm({ isOpen, onClose, refreshData, defaultTipeKerj
       };
 
       await addTask(taskPayload);
-      showToast("Data berhasil disimpan!");
+      alert("Data berhasil disimpan!");
       await refreshData();
-      
-      setTimeout(() => {
-        onClose();
-      }, 1200);
+      onClose();
 
     } catch (error) {
       console.error("Submit error:", error);
