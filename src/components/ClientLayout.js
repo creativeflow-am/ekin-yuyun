@@ -27,7 +27,7 @@ export default function ClientLayout({ children }) {
         )}
 
         {/* Mobile Top Header Bar */}
-        <header className="lg:hidden fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-4 h-14 shadow-sm bg-[#158684]">
+        <header className="lg:hidden fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-4 h-14 shadow-sm bg-[#158684] print:hidden">
           <div className="flex items-center gap-2.5">
             <div className="h-8 w-8 rounded-md overflow-hidden bg-white/10 flex-shrink-0 border border-white/20">
               <img src="/logo.svg" alt="Logo" className="h-full w-full object-cover" />
@@ -40,11 +40,13 @@ export default function ClientLayout({ children }) {
         </header>
 
         {/* Desktop Sidebar */}
-        <Sidebar 
-          activeTab={pathname} 
-          setActiveTab={() => setIsSidebarOpen(false)} 
-          isOpen={isSidebarOpen} 
-        />
+        <div className="print:hidden">
+          <Sidebar 
+            activeTab={pathname} 
+            setActiveTab={() => setIsSidebarOpen(false)} 
+            isOpen={isSidebarOpen} 
+          />
+        </div>
 
         {/* Main Content Area */}
         <div className="flex-1 flex flex-col relative w-full h-screen overflow-hidden">
@@ -54,7 +56,7 @@ export default function ClientLayout({ children }) {
         </div>
 
         {/* Mobile Bottom Navigation */}
-        <nav className="lg:hidden fixed bottom-0 left-0 right-0 w-full bg-white border-t border-slate-200 flex justify-around items-stretch pb-safe z-50 shadow-lg">
+        <nav className="lg:hidden fixed bottom-0 left-0 right-0 w-full bg-white border-t border-slate-200 flex justify-around items-stretch pb-safe z-50 shadow-lg print:hidden">
           <Link href="/overview" className={`flex-1 pt-2 pb-3 px-2 flex flex-col items-center gap-1 transition-colors relative ${pathname === '/overview' ? 'text-[#158684]' : 'text-slate-400'}`}>
             <span className={`absolute top-0 left-3 right-3 h-0.5 rounded-b-full transition-colors ${pathname === '/overview' ? 'bg-[#158684]' : 'bg-transparent'}`}></span>
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mb-0.5" viewBox="0 0 20 20" fill="currentColor">

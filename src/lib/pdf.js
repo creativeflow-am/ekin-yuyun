@@ -8,49 +8,6 @@ const getMonthName = (monthStr) => {
   return months[monthStr] || "Semua Bulan";
 };
 
-// Custom PDF Preview with Filename Enforcement
-function showPdfPreview(doc, filename) {
-  const blobUrl = doc.output('bloburl');
-  
-  const overlay = document.createElement('div');
-  overlay.className = "fixed inset-0 z-[100] flex flex-col bg-slate-900/95 backdrop-blur-sm animate-in fade-in duration-300";
-  
-  const header = document.createElement('div');
-  header.className = "flex items-center justify-between px-4 py-3 bg-slate-800 text-white shadow-md border-b border-slate-700/50";
-  header.innerHTML = `
-    <div class="flex items-center gap-3 overflow-hidden">
-      <div class="p-2 bg-[#158684]/20 rounded-md text-[#158684] flex-shrink-0">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd" /></svg>
-      </div>
-      <h3 class="font-bold text-sm sm:text-base truncate text-slate-200" title="${filename}">${filename}</h3>
-    </div>
-    <div class="flex gap-2 sm:gap-3 flex-shrink-0 ml-2">
-      <button id="close-pdf" class="px-3 py-1.5 sm:px-4 sm:py-2 bg-slate-700 hover:bg-slate-600 rounded-md text-xs sm:text-sm font-semibold transition-colors">Tutup</button>
-      <button id="download-pdf" class="px-3 py-1.5 sm:px-4 sm:py-2 bg-[#158684] hover:bg-teal-600 text-white rounded-md text-xs sm:text-sm font-semibold transition-colors flex items-center gap-1.5 sm:gap-2 shadow-sm">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-        <span>Unduh</span>
-      </button>
-    </div>
-  `;
-  
-  const iframe = document.createElement('iframe');
-  iframe.src = blobUrl;
-  iframe.className = "flex-1 w-full bg-slate-100/5";
-  
-  overlay.appendChild(header);
-  overlay.appendChild(iframe);
-  document.body.appendChild(overlay);
-  
-  document.getElementById('close-pdf').onclick = () => {
-    document.body.removeChild(overlay);
-    URL.revokeObjectURL(blobUrl);
-  };
-  
-  document.getElementById('download-pdf').onclick = () => {
-    doc.save(filename);
-  };
-}
-
 // ==========================================
 // 1. REPORT WFO
 // ==========================================
@@ -126,7 +83,7 @@ export async function generatePdfWfo(data, filterBulan) {
       headStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold', halign: 'center', valign: 'middle', lineWidth: 1, lineColor: [0, 0, 0] },
       alternateRowStyles: { fillColor: [255, 255, 255] },
       styles: { fontSize: 10, cellPadding: 3, lineColor: [0, 0, 0], lineWidth: 1, textColor: [0, 0, 0] },
-      rowPageBreak: 'auto',
+      rowPageBreak: 'avoid',
       columnStyles: {
           0: { cellWidth: 25, halign: 'center' },
           1: { cellWidth: 65, halign: 'center' },
@@ -156,7 +113,9 @@ export async function generatePdfWfo(data, filterBulan) {
   doc.text("NIP. 1970090119961003", rightX, finalY + 100);
 
   const filename = filterBulan === "Semua" ? "Laporan WFO Keseluruhan.pdf" : `WFO ${namaBulan} 2026.pdf`;
-  showPdfPreview(doc, filename);
+  doc.setProperties({ title: filename });
+  const blob = doc.output('bloburl');
+  window.open(blob, '_blank');
 }
 
 // ==========================================
@@ -252,7 +211,7 @@ export async function generatePdfWfa(data, filterBulan) {
       headStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold', halign: 'center', valign: 'middle', lineWidth: 1, lineColor: [0, 0, 0] },
       alternateRowStyles: { fillColor: [255, 255, 255] },
       styles: { fontSize: 10, cellPadding: 3, minCellHeight: 20, lineColor: [0, 0, 0], lineWidth: 1, textColor: [0, 0, 0] },
-      rowPageBreak: 'auto',
+      rowPageBreak: 'avoid',
       columnStyles: {
           0: { cellWidth: 25, halign: 'center' },
           1: { cellWidth: 65, halign: 'center' },
@@ -283,7 +242,9 @@ export async function generatePdfWfa(data, filterBulan) {
   doc.text("NIP. 1970090119961003", rightX, finalY + 100);
 
   const filename = filterBulan === "Semua" ? "Laporan WFA Keseluruhan.pdf" : `WFA ${namaBulan} 2026.pdf`;
-  showPdfPreview(doc, filename);
+  doc.setProperties({ title: filename });
+  const blob = doc.output('bloburl');
+  window.open(blob, '_blank');
 }
 
 // ==========================================
@@ -357,7 +318,7 @@ export async function generatePdfOverview(data, filterBulan) {
       headStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold', halign: 'center', valign: 'middle', lineWidth: 1, lineColor: [0, 0, 0] },
       alternateRowStyles: { fillColor: [255, 255, 255] },
       styles: { fontSize: 10, cellPadding: 3, lineColor: [0, 0, 0], lineWidth: 1, textColor: [0, 0, 0] },
-      rowPageBreak: 'auto',
+      rowPageBreak: 'avoid',
       columnStyles: {
           0: { cellWidth: 20, halign: 'center' },
           1: { cellWidth: 65, halign: 'center' },
@@ -388,5 +349,7 @@ export async function generatePdfOverview(data, filterBulan) {
   doc.text("NIP. 1970090119961003", rightX, finalY + 100);
 
   const filename = filterBulan === "Semua" ? "Laporan Pelaksanaan Tugas.pdf" : `Laporan Tugas ${namaBulan} 2026.pdf`;
-  showPdfPreview(doc, filename);
+  doc.setProperties({ title: filename });
+  const blob = doc.output('bloburl');
+  window.open(blob, '_blank');
 }

@@ -1,13 +1,9 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { generatePdfOverview } from "@/lib/pdf";
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
-import html2canvas from 'html2canvas';
 
 export default function Overview({ tasks }) {
   const [filterBulan, setFilterBulan] = useState("Semua");
-  const [previewData, setPreviewData] = useState(null);
-  const [isExporting, setIsExporting] = useState(false);
-  const chartContainerRef = useRef(null);
   
   const filteredTasks = tasks.filter(task => {
     return filterBulan === "Semua" || (task.tanggal && task.tanggal.split("-")[1] === filterBulan);
@@ -48,90 +44,16 @@ export default function Overview({ tasks }) {
     Jumlah: skpDataRaw[k]
   })).sort((a, b) => b.Jumlah - a.Jumlah);
 
-  const handleExportChart = async () => {
-    if (!chartContainerRef.current) return;
-    setIsExporting(true);
-    try {
-      const element = chartContainerRef.current;
-      // Add temporary watermark
-      const watermark = document.createElement('div');
-      watermark.id = "temp-watermark-export";
-      watermark.className = "text-center text-xs text-slate-500 py-6 font-semibold mt-4 border-t border-slate-200 w-full";
-      watermark.innerHTML = `Diunduh dari Jurnal Yuyun - Humas Ditjen Pendis pada ${new Date().toLocaleString('id-ID')}`;
-      element.appendChild(watermark);
-
-      const canvas = await html2canvas(element, { 
-        scale: 2, 
-        backgroundColor: '#f8fafc',
-        logging: false 
-      });
-      
-      const pngUrl = canvas.toDataURL('image/png');
-      const jpgUrl = canvas.toDataURL('image/jpeg', 0.95);
-      
-      setPreviewData({
-        png: pngUrl,
-        jpg: jpgUrl,
-        width: canvas.width,
-        height: canvas.height,
-        filename: `Statistik_Overview_${filterBulan === 'Semua' ? 'Keseluruhan' : monthNames[filterBulan]}_2026`
-      });
-
-      element.removeChild(watermark);
-    } catch (e) {
-      console.error("Export failed", e);
-      const wm = document.getElementById("temp-watermark-export");
-      if (wm) wm.parentNode.removeChild(wm);
-    } finally {
-      setIsExporting(false);
-    }
-  };
-
-  const downloadFile = async (format) => {
-    if (!previewData) return;
-    
-    if (format === 'pdf') {
-      const { default: jsPDF } = await import("jspdf");
-      // Calculate aspect ratio to fit A4
-      const a4Width = 595.28;
-      const a4Height = 841.89;
-      
-      // We will create a landscape or portrait PDF depending on aspect ratio
-      const orientation = previewData.width > previewData.height ? 'l' : 'p';
-      const pdf = new jsPDF(orientation, 'pt', 'a4');
-      
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-      
-      // margin
-      const margin = 20;
-      const availableWidth = pdfWidth - (margin * 2);
-      const availableHeight = pdfHeight - (margin * 2);
-      
-      let finalWidth = availableWidth;
-      let finalHeight = (previewData.height * availableWidth) / previewData.width;
-      
-      if (finalHeight > availableHeight) {
-        finalHeight = availableHeight;
-        finalWidth = (previewData.width * availableHeight) / previewData.height;
-      }
-      
-      const x = (pdfWidth - finalWidth) / 2;
-      const y = (pdfHeight - finalHeight) / 2;
-      
-      pdf.addImage(previewData.png, 'PNG', x, y, finalWidth, finalHeight);
-      pdf.save(`${previewData.filename}.pdf`);
-    } else {
-      const link = document.createElement('a');
-      link.download = `${previewData.filename}.${format}`;
-      link.href = format === 'png' ? previewData.png : previewData.jpg;
-      link.click();
-    }
-  };
-
   return (
-    <div className="w-full">
-      <div className="mb-6 lg:mb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+    <div className="w-full relative">
+      
+      {/* Print Watermark (Hanya Tampil Saat Print) */}
+      <div className="hidden print:block text-center text-sm font-bold text-slate-800 mb-8 border-b-2 border-slate-800 pb-4">
+        LAPORAN STATISTIK E-KINERJA<br/>
+        <span className="font-normal text-xs text-slate-600">Jurnal Yuyun - Humas Ditjen Pendis</span>
+      </div>
+
+      <div className="mb-6 lg:mb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-4 print:hidden">
         <div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight">Overview</h1>
           <p className="text-slate-500 mt-1 text-sm sm:text-base">Ringkasan keseluruhan aktivitas E-Kinerja</p>
@@ -156,13 +78,9 @@ export default function Overview({ tasks }) {
             </select>
           </div>
           <div className="w-full sm:w-auto flex items-end gap-2">
-            <button onClick={handleExportChart} disabled={isExporting} className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 disabled:opacity-70 text-white font-bold py-2.5 px-4 rounded-md transition-all shadow-md flex justify-center items-center gap-2 text-sm sm:text-base whitespace-nowrap">
-              {isExporting ? (
-                <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-              ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-              )}
-              <span>Unduh Grafik</span>
+            <button onClick={() => window.print()} className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-4 rounded-md transition-all shadow-md flex justify-center items-center gap-2 text-sm sm:text-base whitespace-nowrap">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
+              <span>Unduh Grafik (Print)</span>
             </button>
             <button onClick={() => generatePdfOverview(filteredTasks, filterBulan)} className="w-full sm:w-auto bg-[#FDB200] hover:bg-yellow-500 text-white font-bold py-2.5 px-4 rounded-md transition-all shadow-md flex justify-center items-center gap-2 text-sm sm:text-base whitespace-nowrap">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
@@ -194,7 +112,7 @@ export default function Overview({ tasks }) {
         </div>
       </div>
 
-      <div ref={chartContainerRef} className="pb-4 bg-[#f8fafc]">
+      <div className="pb-4 bg-[#f8fafc] print:bg-white">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <div className="bg-white border border-slate-200 rounded-lg p-5 shadow-sm">
           <h3 className="text-sm font-bold text-slate-800 mb-4">Distribusi WFO vs WFA</h3>
@@ -289,40 +207,9 @@ export default function Overview({ tasks }) {
       </div>
       </div>
 
-      {/* Image Preview Modal */}
-      {previewData && (
-        <div className="fixed inset-0 z-[100] flex flex-col bg-slate-900/95 backdrop-blur-sm animate-in fade-in duration-300">
-          <div className="flex items-center justify-between px-4 py-3 bg-slate-800 text-white shadow-md border-b border-slate-700/50">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-indigo-500/20 rounded-md text-indigo-400">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-              </div>
-              <h3 className="font-bold text-sm sm:text-base text-slate-200">Preview Grafik & Statistik</h3>
-            </div>
-            <button onClick={() => setPreviewData(null)} className="px-3 py-1.5 sm:px-4 sm:py-2 bg-slate-700 hover:bg-slate-600 rounded-md text-xs sm:text-sm font-semibold transition-colors">Batal</button>
-          </div>
-          
-          <div className="flex-1 overflow-auto p-4 sm:p-8 flex justify-center items-start">
-            <img src={previewData.png} alt="Preview Grafik" className="max-w-full h-auto shadow-2xl rounded-lg ring-4 ring-white/10" />
-          </div>
-
-          <div className="bg-slate-800 p-4 border-t border-slate-700/50 flex flex-wrap justify-center gap-3">
-            <button onClick={() => downloadFile('png')} className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md text-sm font-semibold shadow-sm flex items-center gap-2 transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-              Unduh PNG
-            </button>
-            <button onClick={() => downloadFile('jpg')} className="px-4 py-2.5 bg-teal-600 hover:bg-teal-700 text-white rounded-md text-sm font-semibold shadow-sm flex items-center gap-2 transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-              Unduh JPG
-            </button>
-            <button onClick={() => downloadFile('pdf')} className="px-4 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-md text-sm font-semibold shadow-sm flex items-center gap-2 transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-              Unduh PDF
-            </button>
-          </div>
-        </div>
-      )}
-
+      <div className="hidden print:block text-center text-xs text-slate-500 pt-8 mt-8 border-t border-slate-300">
+        Dicetak pada {new Date().toLocaleString('id-ID')}
+      </div>
     </div>
   );
 }
