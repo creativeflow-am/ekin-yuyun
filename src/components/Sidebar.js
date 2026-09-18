@@ -48,21 +48,27 @@ export default function Sidebar({ activeTab, setActiveTab, isOpen }) {
         </div>
         
         <nav className="space-y-2 flex-grow">
-          {navItems.map(item => (
-            <Link
-              href={item.id}
-              key={item.id}
-              onClick={setActiveTab}
-              className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium rounded-none transition-colors border-l-4 ${
-                activeTab === item.id
-                  ? "border-[#158684] bg-[#158684]/10 text-[#158684]" 
-                  : "border-transparent text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-              }`}
-            >
-              {item.icon}
-              {item.label}
-            </Link>
-          ))}
+          {navItems.map(item => {
+            const isTambah = activeTab === '/tambah';
+            const urlType = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('type') : null;
+            const isActive = activeTab === item.id || (isTambah && urlType && item.id.includes(urlType));
+            
+            return (
+              <Link
+                href={item.id}
+                key={item.id}
+                onClick={setActiveTab}
+                className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium rounded-none transition-colors border-l-4 ${
+                  isActive
+                    ? "border-[#158684] bg-[#158684]/10 text-[#158684]" 
+                    : "border-transparent text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                }`}
+              >
+                {item.icon}
+                {item.label}
+              </Link>
+            );
+          })}
         </nav>
         
         <div className="mt-auto pt-6 border-t border-slate-100">
