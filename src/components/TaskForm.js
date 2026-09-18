@@ -17,6 +17,7 @@ export default function TaskForm({ isOpen, onClose, refreshData, defaultTipeKerj
   const [file, setFile] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [toast, setToast] = useState({ show: false, message: "", type: "success" });
+  const [showSuccessOverlay, setShowSuccessOverlay] = useState(false);
 
   if (!isOpen) return null;
 
@@ -93,9 +94,13 @@ export default function TaskForm({ isOpen, onClose, refreshData, defaultTipeKerj
       };
 
       await addTask(taskPayload);
-      alert("Data berhasil disimpan!");
+      setShowSuccessOverlay(true);
       await refreshData();
-      onClose();
+      
+      setTimeout(() => {
+        onClose();
+        setTimeout(() => setShowSuccessOverlay(false), 300); // reset after animation
+      }, 700);
 
     } catch (error) {
       console.error("Submit error:", error);
@@ -109,7 +114,20 @@ export default function TaskForm({ isOpen, onClose, refreshData, defaultTipeKerj
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full relative">
+      {/* Success Overlay */}
+      {showSuccessOverlay && (
+        <div className="absolute inset-0 z-50 bg-white/95 backdrop-blur-sm rounded-lg flex flex-col items-center justify-center animate-in fade-in duration-300">
+          <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mb-4 shadow-inner">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-emerald-500 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <h3 className="text-xl font-bold text-slate-800 mb-1">Berhasil!</h3>
+          <p className="text-sm text-slate-500 font-medium">Data kegiatan telah disimpan.</p>
+        </div>
+      )}
+
       {toast.show && (
         <div className={`mb-4 p-3 rounded-md text-sm font-semibold text-white transition-all ${toast.type === 'error' ? 'bg-red-500' : toast.type === 'info' ? 'bg-blue-500' : 'bg-emerald-500'}`}>
           {toast.message}

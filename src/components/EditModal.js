@@ -15,6 +15,7 @@ export default function EditModal({ task, onClose, refreshData }) {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [showSuccessOverlay, setShowSuccessOverlay] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -43,8 +44,12 @@ export default function EditModal({ task, onClose, refreshData }) {
         tipe_evidence: formData.tipe_evidence,
       };
       await updateTask(task.id, payload);
+      setShowSuccessOverlay(true);
       await refreshData();
-      onClose();
+      setTimeout(() => {
+        onClose();
+        setTimeout(() => setShowSuccessOverlay(false), 300);
+      }, 700);
     } catch (err) {
       setError("Gagal menyimpan: " + err.message);
       setIsSubmitting(false);
@@ -58,6 +63,19 @@ export default function EditModal({ task, onClose, refreshData }) {
 
       {/* Modal */}
       <div className="relative w-full sm:max-w-lg bg-white rounded-t-2xl sm:rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+        
+        {/* Success Overlay */}
+        {showSuccessOverlay && (
+          <div className="absolute inset-0 z-50 bg-white/95 backdrop-blur-sm rounded-t-2xl sm:rounded-xl flex flex-col items-center justify-center animate-in fade-in duration-300">
+            <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mb-4 shadow-inner">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-emerald-500 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-bold text-slate-800 mb-1">Berhasil!</h3>
+            <p className="text-sm text-slate-500 font-medium">Perubahan telah disimpan.</p>
+          </div>
+        )}
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
           <div>

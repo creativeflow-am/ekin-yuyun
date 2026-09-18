@@ -13,7 +13,7 @@ const getMonthName = (monthStr) => {
 // ==========================================
 export async function generatePdfWfo(data, filterBulan) {
   const { default: jsPDF } = await import("jspdf");
-  await import("jspdf-autotable");
+  const { default: autoTable } = await import("jspdf-autotable");
   const doc = new jsPDF('p', 'pt', 'a4');
   
   doc.setFontSize(12);
@@ -73,7 +73,7 @@ export async function generatePdfWfo(data, filterBulan) {
       });
   }
 
-  doc.autoTable({
+  autoTable(doc, {
       startY: 195,
       margin: { top: 40, right: 40, bottom: 40, left: 40 },
       head: [['No', 'Tanggal', 'Butir Kegiatan SKP', 'Deskripsi / Output', 'Evidence URL']],
@@ -99,7 +99,7 @@ export async function generatePdfWfo(data, filterBulan) {
 // ==========================================
 export async function generatePdfWfa(data, filterBulan) {
   const { default: jsPDF } = await import("jspdf");
-  await import("jspdf-autotable");
+  const { default: autoTable } = await import("jspdf-autotable");
   const doc = new jsPDF('p', 'pt', 'a4');
 
   doc.setFontSize(12);
@@ -177,7 +177,7 @@ export async function generatePdfWfa(data, filterBulan) {
       });
   });
 
-  doc.autoTable({
+  autoTable(doc, {
       startY: 195,
       margin: { top: 40, right: 40, bottom: 40, left: 40 },
       head: [['No', 'Tanggal', 'Masuk', 'Pulang', 'Hasil Kerja', 'Realisasi', 'Evidence URL']],
@@ -223,7 +223,7 @@ export async function generatePdfWfa(data, filterBulan) {
 // ==========================================
 export async function generatePdfOverview(data, filterBulan) {
   const { default: jsPDF } = await import("jspdf");
-  await import("jspdf-autotable");
+  const { default: autoTable } = await import("jspdf-autotable");
   const doc = new jsPDF('p', 'pt', 'a4');
   
   doc.setFontSize(12);
@@ -279,7 +279,7 @@ export async function generatePdfOverview(data, filterBulan) {
       });
   });
 
-  doc.autoTable({
+  autoTable(doc, {
       startY: 195,
       margin: { top: 40, right: 40, bottom: 40, left: 40 },
       head: [['No', 'Tanggal', 'Tipe', 'Butir SKP', 'Deskripsi / Output', 'Evidence URL']],
