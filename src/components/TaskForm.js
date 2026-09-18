@@ -11,7 +11,7 @@ export default function TaskForm({ isOpen, onClose, refreshData, defaultTipeKerj
     jamPulang: "17:00",
     skp: "",
     deskripsi: "",
-    tipeEvidence: "none",
+    tipeEvidence: "file",
     tautan: "",
   });
   const [file, setFile] = useState(null);
@@ -51,7 +51,22 @@ export default function TaskForm({ isOpen, onClose, refreshData, defaultTipeKerj
     setIsSubmitting(true);
     
     try {
+      if (formData.tipeEvidence === "link" && !formData.tautan) {
+        showToast("Tautan bukti kegiatan tidak boleh kosong!", "error");
+        setIsSubmitting(false);
+        return;
+      }
+      
+      if (formData.tipeEvidence === "file" && !file) {
+        showToast("File bukti kegiatan wajib diunggah!", "error");
+        setIsSubmitting(false);
+        return;
+      }
+
       let finalEvidenceUrl = "";
+      if (formData.tipeEvidence === "link") {
+        finalEvidenceUrl = formData.tautan;
+      }
 
       // Upload file ke Google Drive jika ada
       if (formData.tipeEvidence === "file" && file) {
@@ -64,8 +79,6 @@ export default function TaskForm({ isOpen, onClose, refreshData, defaultTipeKerj
         reader.readAsDataURL(file);
         const base64Data = await base64Promise;
         finalEvidenceUrl = await uploadToGoogleDrive(base64Data, file.name, file.type);
-      } else if (formData.tipeEvidence === "link") {
-        finalEvidenceUrl = formData.tautan;
       }
 
       const taskPayload = {
@@ -170,10 +183,9 @@ export default function TaskForm({ isOpen, onClose, refreshData, defaultTipeKerj
 
         {/* Evidence */}
         <div className="pt-4 border-t border-slate-100">
-          <label className="block text-sm font-semibold text-slate-700 mb-2">Bukti Kegiatan (Opsional)</label>
+          <label className="block text-sm font-semibold text-slate-700 mb-2">Bukti Kegiatan <span className="text-red-500">*</span></label>
           <div className="flex gap-3 mb-3">
             {[
-              { value: "none", label: "Tidak Ada" },
               { value: "file", label: "Upload File" },
               { value: "link", label: "Tautan URL" },
             ].map(opt => (

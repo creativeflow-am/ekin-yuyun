@@ -1,7 +1,9 @@
+import Link from "next/link";
+
 export default function Sidebar({ activeTab, setActiveTab, isOpen }) {
   const navItems = [
     { 
-      id: "overview", 
+      id: "/overview", 
       label: "Overview", 
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -11,7 +13,7 @@ export default function Sidebar({ activeTab, setActiveTab, isOpen }) {
       )
     },
     { 
-      id: "wfo", 
+      id: "/wfo", 
       label: "Work From Office", 
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -20,7 +22,7 @@ export default function Sidebar({ activeTab, setActiveTab, isOpen }) {
       )
     },
     { 
-      id: "wfa", 
+      id: "/wfa", 
       label: "Work From Anywhere", 
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -47,18 +49,19 @@ export default function Sidebar({ activeTab, setActiveTab, isOpen }) {
         
         <nav className="space-y-2 flex-grow">
           {navItems.map(item => (
-            <button
+            <Link
+              href={item.id}
               key={item.id}
-              onClick={() => setActiveTab(item.id)}
+              onClick={setActiveTab}
               className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium rounded-none transition-colors border-l-4 ${
-                activeTab === item.id 
+                activeTab === item.id || (activeTab === '/tambah' && item.id.includes(typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('type') : ''))
                   ? "border-[#158684] bg-[#158684]/10 text-[#158684]" 
                   : "border-transparent text-slate-600 hover:bg-slate-50 hover:text-slate-900"
               }`}
             >
               {item.icon}
               {item.label}
-            </button>
+            </Link>
           ))}
         </nav>
         

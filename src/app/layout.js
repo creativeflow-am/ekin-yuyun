@@ -1,4 +1,5 @@
 import { Sora } from "next/font/google";
+import ClientLayout from "@/components/ClientLayout";
 import "./globals.css";
 
 const sora = Sora({
@@ -33,7 +34,7 @@ export default function RootLayout({ children }) {
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body className={`${sora.variable} antialiased`}>
-        {children}
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   );

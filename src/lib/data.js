@@ -7,7 +7,7 @@ const COLLECTION_NAME = "pekerjaan";
  * Fetch all tasks from Firestore
  */
 export async function getTasks() {
-  const q = query(collection(db, COLLECTION_NAME), orderBy("tanggal", "desc"));
+  const q = query(collection(db, COLLECTION_NAME), orderBy("tanggal", "asc"));
   const snapshot = await getDocs(q);
   const tasks = [];
   snapshot.forEach((doc) => {

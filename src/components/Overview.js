@@ -45,30 +45,44 @@ export default function Overview({ tasks }) {
   })).sort((a, b) => b.Jumlah - a.Jumlah);
 
   return (
-    <div className="fade-in w-full">
+    <div className="w-full">
       <div className="mb-6 lg:mb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight">Overview</h1>
           <p className="text-slate-500 mt-1 text-sm sm:text-base">Ringkasan keseluruhan aktivitas E-Kinerja</p>
         </div>
         <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto mt-4 md:mt-0">
-          <div className="w-full sm:w-40">
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5 ml-1">Bulan Laporan</label>
-            <select value={filterBulan} onChange={(e) => setFilterBulan(e.target.value)} className="input-field w-full p-2.5 bg-slate-50 lg:bg-white border border-slate-200 rounded-md focus:ring-2 focus:ring-[#158684] outline-none text-slate-700 text-sm cursor-pointer">
-              <option value="Semua">Semua Bulan</option>
-              <option value="01">Januari</option>
-              <option value="02">Februari</option>
-              <option value="03">Maret</option>
-              <option value="04">April</option>
-              <option value="05">Mei</option>
-              <option value="06">Juni</option>
-              <option value="07">Juli</option>
-              <option value="08">Agustus</option>
-              <option value="09">September</option>
-              <option value="10">Oktober</option>
-              <option value="11">November</option>
-              <option value="12">Desember</option>
-            </select>
+          <div className="w-full sm:w-auto flex-1 overflow-hidden flex flex-col min-w-[200px]">
+            <label className="block text-xs font-semibold text-slate-700 mb-1.5 ml-1">Filter Bulan</label>
+            <div className="flex overflow-x-auto gap-2 pb-2" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+              {[
+                { val: "Semua", label: "Semua" },
+                { val: "01", label: "Januari" },
+                { val: "02", label: "Februari" },
+                { val: "03", label: "Maret" },
+                { val: "04", label: "April" },
+                { val: "05", label: "Mei" },
+                { val: "06", label: "Juni" },
+                { val: "07", label: "Juli" },
+                { val: "08", label: "Agustus" },
+                { val: "09", label: "September" },
+                { val: "10", label: "Oktober" },
+                { val: "11", label: "November" },
+                { val: "12", label: "Desember" }
+              ].map(m => (
+                <button
+                  key={m.val}
+                  onClick={() => setFilterBulan(m.val)}
+                  className={`px-4 py-2 rounded-full text-xs font-semibold transition-all flex-shrink-0 ${
+                    filterBulan === m.val
+                      ? "bg-[#158684] text-white shadow-md border border-[#158684]"
+                      : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-slate-300"
+                  }`}
+                >
+                  {m.label}
+                </button>
+              ))}
+            </div>
           </div>
           <div className="w-full sm:w-auto flex items-end">
             <button onClick={() => generatePdfOverview(filteredTasks, filterBulan)} className="w-full bg-[#FDB200] hover:bg-yellow-500 text-white font-bold py-2.5 px-5 rounded-md transition-all shadow-md flex justify-center items-center gap-2 text-sm sm:text-base whitespace-nowrap">

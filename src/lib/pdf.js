@@ -1,3 +1,6 @@
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+
 // Helper function to format month
 const getMonthName = (monthStr) => {
   const months = {
@@ -11,9 +14,7 @@ const getMonthName = (monthStr) => {
 // ==========================================
 // 1. REPORT WFO
 // ==========================================
-export async function generatePdfWfo(data, filterBulan) {
-  const jsPDF = (await import('jspdf')).default;
-  await import('jspdf-autotable');
+export function generatePdfWfo(data, filterBulan) {
   const doc = new jsPDF('p', 'pt', 'a4');
   
   doc.setFontSize(12);
@@ -97,9 +98,7 @@ export async function generatePdfWfo(data, filterBulan) {
 // ==========================================
 // 2. REPORT WFA
 // ==========================================
-export async function generatePdfWfa(data, filterBulan) {
-  const jsPDF = (await import('jspdf')).default;
-  await import('jspdf-autotable');
+export function generatePdfWfa(data, filterBulan) {
   const doc = new jsPDF('p', 'pt', 'a4');
 
   doc.setFontSize(12);
@@ -221,9 +220,7 @@ export async function generatePdfWfa(data, filterBulan) {
 // ==========================================
 // 3. REPORT OVERVIEW
 // ==========================================
-export async function generatePdfOverview(data, filterBulan) {
-  const jsPDF = (await import('jspdf')).default;
-  await import('jspdf-autotable');
+export function generatePdfOverview(data, filterBulan) {
   const doc = new jsPDF('p', 'pt', 'a4');
   
   doc.setFontSize(12);

@@ -9,7 +9,6 @@ export default function DashboardWfo({ tasks, refreshData, onOpenForm }) {
   const [filterSkp, setFilterSkp] = useState("Semua");
   const [deletingId, setDeletingId] = useState(null);
   const [editingTask, setEditingTask] = useState(null);
-  const [pdfLoading, setPdfLoading] = useState(false);
 
   const handleDelete = async (id) => {
     if (!confirm("Hapus data ini?")) return;
@@ -33,7 +32,7 @@ export default function DashboardWfo({ tasks, refreshData, onOpenForm }) {
 
   return (
     <>
-      <div className="fade-in w-full">
+      <div className="w-full">
       <div className="mb-6 lg:mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 text-center sm:text-left">
         <div className="w-full sm:w-auto">
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight">Work From Office</h1>
@@ -44,28 +43,41 @@ export default function DashboardWfo({ tasks, refreshData, onOpenForm }) {
       <div className="w-full">
         {/* Filters */}
         <div className="flex flex-col md:flex-row gap-3 md:gap-4 items-end mb-6 pb-6 border-b border-slate-200/80">
-          <div className="w-full md:w-1/4">
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5 ml-1">Bulan</label>
-            <select value={filterBulan} onChange={(e) => setFilterBulan(e.target.value)} className="input-field w-full p-2.5 sm:p-3 bg-slate-50 lg:bg-white border border-slate-200 rounded-md focus:ring-2 focus:ring-[#158684] outline-none text-slate-700 text-sm cursor-pointer">
-              <option value="Semua">Semua</option>
-              <option value="01">Januari</option>
-              <option value="02">Februari</option>
-              <option value="03">Maret</option>
-              <option value="04">April</option>
-              <option value="05">Mei</option>
-              <option value="06">Juni</option>
-              <option value="07">Juli</option>
-              <option value="08">Agustus</option>
-              <option value="09">September</option>
-              <option value="10">Oktober</option>
-              <option value="11">November</option>
-              <option value="12">Desember</option>
-            </select>
+          <div className="w-full md:w-auto flex-1 overflow-hidden flex flex-col">
+            <label className="block text-xs font-semibold text-slate-700 mb-1.5 ml-1">Filter Bulan</label>
+            <div className="flex overflow-x-auto gap-2 pb-2" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+              {[
+                { val: "Semua", label: "Semua" },
+                { val: "01", label: "Januari" },
+                { val: "02", label: "Februari" },
+                { val: "03", label: "Maret" },
+                { val: "04", label: "April" },
+                { val: "05", label: "Mei" },
+                { val: "06", label: "Juni" },
+                { val: "07", label: "Juli" },
+                { val: "08", label: "Agustus" },
+                { val: "09", label: "September" },
+                { val: "10", label: "Oktober" },
+                { val: "11", label: "November" },
+                { val: "12", label: "Desember" }
+              ].map(m => (
+                <button
+                  key={m.val}
+                  onClick={() => setFilterBulan(m.val)}
+                  className={`px-4 py-2 rounded-full text-xs font-semibold transition-all flex-shrink-0 ${
+                    filterBulan === m.val
+                      ? "bg-[#158684] text-white shadow-md border border-[#158684]"
+                      : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-slate-300"
+                  }`}
+                >
+                  {m.label}
+                </button>
+              ))}
+            </div>
           </div>
-
-          <div className="w-full md:w-1/2">
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5 ml-1">SKP</label>
-            <select value={filterSkp} onChange={(e) => setFilterSkp(e.target.value)} className="input-field w-full p-2.5 sm:p-3 bg-slate-50 lg:bg-white border border-slate-200 rounded-md focus:ring-2 focus:ring-[#158684] outline-none text-slate-700 text-sm cursor-pointer">
+          <div className="w-full md:w-1/3">
+            <label className="block text-xs font-semibold text-slate-700 mb-1.5 ml-1">Filter SKP</label>
+            <select value={filterSkp} onChange={(e) => setFilterSkp(e.target.value)} className="input-field w-full p-2.5 sm:p-3 bg-slate-50 lg:bg-white border border-slate-200 rounded-full focus:ring-2 focus:ring-[#158684] outline-none text-slate-700 text-xs font-medium cursor-pointer h-[34px]">
               <option value="Semua">Semua SKP</option>
               {SKP_LIST.map((skp) => (
                 <option key={skp} value={skp}>{skp}</option>
@@ -80,23 +92,11 @@ export default function DashboardWfo({ tasks, refreshData, onOpenForm }) {
               </svg>
               <span>Tambah Kegiatan</span>
             </button>
-            <button
-              onClick={async () => {
-                setPdfLoading(true);
-                try { await generatePdfWfo(filteredTasks, filterBulan); }
-                finally { setPdfLoading(false); }
-              }}
-              disabled={pdfLoading}
-              className="w-full bg-slate-700 hover:bg-slate-800 disabled:opacity-60 text-white font-bold py-2.5 px-5 rounded-md transition-all shadow-md flex justify-center items-center gap-2 text-sm sm:text-base whitespace-nowrap"
-            >
-              {pdfLoading ? (
-                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-              ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-              )}
-              <span>{pdfLoading ? "Memproses..." : "Unduh PDF"}</span>
+            <button onClick={() => generatePdfWfo(filteredTasks, filterBulan)} className="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-2.5 px-5 rounded-md transition-all shadow-md flex justify-center items-center gap-2 text-sm sm:text-base whitespace-nowrap">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+              <span>Unduh PDF</span>
             </button>
           </div>
         </div>
@@ -152,13 +152,11 @@ export default function DashboardWfo({ tasks, refreshData, onOpenForm }) {
                           <td className="px-4 py-3">
                             <div className="text-sm text-slate-800">{item.deskripsi}</div>
                           </td>
-                          <td className="px-4 py-3 text-center align-top">
+                          <td className="px-4 py-3 text-center align-top max-w-[150px]">
                             {evUrl && evUrl !== '#' ? (
-                              isLink ? (
-                                <a href={evUrl} target="_blank" className="inline-flex items-center gap-1 text-xs font-semibold text-indigo-600 bg-indigo-50 px-2 py-1 rounded-lg hover:bg-indigo-100">Tautan</a>
-                              ) : (
-                                <a href={evUrl} target="_blank" className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg hover:bg-emerald-100">File</a>
-                              )
+                              <a href={evUrl} target="_blank" className="inline-flex items-center gap-1 text-xs font-semibold text-indigo-600 bg-indigo-50 px-2 py-1 rounded hover:bg-indigo-100 truncate w-full block" title={evUrl}>
+                                {isLink ? "🔗" : "📁"} {evUrl.replace(/^https?:\/\//, '')}
+                              </a>
                             ) : (
                               "-"
                             )}
@@ -241,11 +239,9 @@ export default function DashboardWfo({ tasks, refreshData, onOpenForm }) {
                       <div className="flex items-center gap-2">
                         <span className="text-xs font-semibold text-slate-800 line-clamp-1">{item.skp}</span>
                         {evUrl && evUrl !== '#' && (
-                          isLink ? (
-                            <a href={evUrl} target="_blank" className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ color: "#158684", backgroundColor: "rgba(21,134,132,0.1)" }}>Tautan ↗</a>
-                          ) : (
-                            <a href={evUrl} target="_blank" className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">File ↗</a>
-                          )
+                          <a href={evUrl} target="_blank" className="text-[10px] font-medium px-2 py-0.5 rounded bg-slate-100 text-slate-600 truncate block max-w-[200px]" title={evUrl}>
+                            {isLink ? "🔗" : "📁"} {evUrl.replace(/^https?:\/\//, '')}
+                          </a>
                         )}
                       </div>
                     </div>
