@@ -76,16 +76,17 @@ export async function generatePdfWfo(data, filterBulan) {
   autoTable(doc, {
       startY: 195,
       margin: { top: 40, right: 40, bottom: 40, left: 40 },
+      showHead: 'firstPage',
       head: [['No', 'Tanggal', 'Butir Kegiatan SKP', 'Deskripsi / Output', 'Evidence URL']],
       body: tableBody,
       theme: 'grid',
       headStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold', halign: 'center', valign: 'middle', lineWidth: 1, lineColor: [0, 0, 0] },
       alternateRowStyles: { fillColor: [255, 255, 255] },
-      styles: { fontSize: 10, cellPadding: 5, lineColor: [0, 0, 0], lineWidth: 1, textColor: [0, 0, 0] },
+      styles: { fontSize: 10, cellPadding: 3, lineColor: [0, 0, 0], lineWidth: 1, textColor: [0, 0, 0] },
       rowPageBreak: 'auto',
       columnStyles: {
           0: { cellWidth: 25, halign: 'center' },
-          1: { cellWidth: 55, halign: 'center' },
+          1: { cellWidth: 65, halign: 'center' },
           2: { cellWidth: 100 },
           4: { cellWidth: 120, halign: 'left' },
       }
@@ -111,7 +112,8 @@ export async function generatePdfWfo(data, filterBulan) {
   doc.text("M. Arskal Salim GP", rightX, finalY + 85);
   doc.text("NIP. 1970090119961003", rightX, finalY + 100);
 
-  doc.save("Laporan_WFO.pdf");
+  const blob = doc.output('blob');
+  window.open(URL.createObjectURL(blob), '_blank');
 }
 
 // ==========================================
@@ -145,8 +147,8 @@ export async function generatePdfWfa(data, filterBulan) {
       if (!dateGroup) {
           dateGroup = {
               tanggal: item.tanggal,
-              jam_masuk: item.jam_masuk,
-              jam_pulang: item.jam_pulang,
+              jam_masuk: item.jamMasuk || item.jam_masuk || "-",
+              jam_pulang: item.jamPulang || item.jam_pulang || "-",
               skpGroups: [],
               totalItems: 0
           };
@@ -200,19 +202,20 @@ export async function generatePdfWfa(data, filterBulan) {
   autoTable(doc, {
       startY: 195,
       margin: { top: 40, right: 40, bottom: 40, left: 40 },
+      showHead: 'firstPage',
       head: [['No', 'Tanggal', 'Masuk', 'Pulang', 'Hasil Kerja', 'Realisasi', 'Evidence URL']],
       body: tableBody,
       theme: 'grid',
       headStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold', halign: 'center', valign: 'middle', lineWidth: 1, lineColor: [0, 0, 0] },
       alternateRowStyles: { fillColor: [255, 255, 255] },
-      styles: { fontSize: 10, cellPadding: 5, minCellHeight: 20, lineColor: [0, 0, 0], lineWidth: 1, textColor: [0, 0, 0] },
+      styles: { fontSize: 10, cellPadding: 3, minCellHeight: 20, lineColor: [0, 0, 0], lineWidth: 1, textColor: [0, 0, 0] },
       rowPageBreak: 'auto',
       columnStyles: {
           0: { cellWidth: 25, halign: 'center' },
-          1: { cellWidth: 55, halign: 'center' },
-          2: { cellWidth: 40, halign: 'center' },
-          3: { cellWidth: 40, halign: 'center' },
-          6: { cellWidth: 120, halign: 'left' }
+          1: { cellWidth: 65, halign: 'center' },
+          2: { cellWidth: 45, halign: 'center' },
+          3: { cellWidth: 45, halign: 'center' },
+          6: { cellWidth: 110, halign: 'left' }
       }
   });
 
@@ -236,7 +239,8 @@ export async function generatePdfWfa(data, filterBulan) {
   doc.text("M. Arskal Salim GP", rightX, finalY + 85);
   doc.text("NIP. 1970090119961003", rightX, finalY + 100);
 
-  doc.save("Laporan_WFA.pdf");
+  const blob = doc.output('blob');
+  window.open(URL.createObjectURL(blob), '_blank');
 }
 
 // ==========================================
@@ -303,19 +307,20 @@ export async function generatePdfOverview(data, filterBulan) {
   autoTable(doc, {
       startY: 195,
       margin: { top: 40, right: 40, bottom: 40, left: 40 },
+      showHead: 'firstPage',
       head: [['No', 'Tanggal', 'Tipe', 'Butir SKP', 'Deskripsi / Output', 'Evidence URL']],
       body: tableData,
       theme: 'grid',
       headStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold', halign: 'center', valign: 'middle', lineWidth: 1, lineColor: [0, 0, 0] },
       alternateRowStyles: { fillColor: [255, 255, 255] },
-      styles: { fontSize: 10, cellPadding: 5, lineColor: [0, 0, 0], lineWidth: 1, textColor: [0, 0, 0] },
+      styles: { fontSize: 10, cellPadding: 3, lineColor: [0, 0, 0], lineWidth: 1, textColor: [0, 0, 0] },
       rowPageBreak: 'auto',
       columnStyles: {
           0: { cellWidth: 20, halign: 'center' },
-          1: { cellWidth: 55, halign: 'center' },
+          1: { cellWidth: 65, halign: 'center' },
           2: { cellWidth: 35, halign: 'center' },
           3: { cellWidth: 100 },
-          5: { cellWidth: 120, halign: 'left' }
+          5: { cellWidth: 110, halign: 'left' }
       }
   });
 
@@ -339,5 +344,6 @@ export async function generatePdfOverview(data, filterBulan) {
   doc.text("M. Arskal Salim GP", rightX, finalY + 85);
   doc.text("NIP. 1970090119961003", rightX, finalY + 100);
 
-  doc.save("Laporan_Overview.pdf");
+  const blob = doc.output('blob');
+  window.open(URL.createObjectURL(blob), '_blank');
 }
