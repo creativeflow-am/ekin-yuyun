@@ -3,7 +3,7 @@ import { addTask } from "@/lib/data";
 import { uploadToGoogleDrive } from "@/lib/drive";
 import { SKP_LIST } from "@/lib/constants";
 
-export default function TaskForm({ isOpen, onClose, refreshData, defaultTipeKerja = "WFO" }) {
+export default function TaskForm({ isOpen, onClose, refreshData, addTaskLocal, defaultTipeKerja = "WFO" }) {
   const [formData, setFormData] = useState({
     tanggal: new Date().toISOString().split("T")[0], // default hari ini
     tipeKerja: defaultTipeKerja,
@@ -93,9 +93,14 @@ export default function TaskForm({ isOpen, onClose, refreshData, defaultTipeKerj
         tipe_evidence: formData.tipeEvidence === "file" ? "File" : formData.tipeEvidence === "link" ? "Tautan" : "",
       };
 
-      await addTask(taskPayload);
+      const addedTask = await addTask(taskPayload);
       setShowSuccessOverlay(true);
-      await refreshData();
+      
+      if (addTaskLocal) {
+        addTaskLocal(addedTask);
+      } else if (refreshData) {
+        await refreshData();
+      }
       
       setTimeout(() => {
         onClose();

@@ -33,8 +33,20 @@ export function TaskProvider({ children }) {
     }
   }, []);
 
+  const addTaskLocal = (newTask) => {
+    setTasks(prev => [...prev, newTask].sort((a,b) => a.tanggal.localeCompare(b.tanggal)));
+  };
+
+  const updateTaskLocal = (updatedTask) => {
+    setTasks(prev => prev.map(t => t.id === updatedTask.id ? updatedTask : t).sort((a,b) => a.tanggal.localeCompare(b.tanggal)));
+  };
+
+  const deleteTaskLocal = (id) => {
+    setTasks(prev => prev.filter(t => t.id !== id));
+  };
+
   return (
-    <TaskContext.Provider value={{ tasks, isLoading, refreshData: fetchData }}>
+    <TaskContext.Provider value={{ tasks, isLoading, refreshData: fetchData, addTaskLocal, updateTaskLocal, deleteTaskLocal }}>
       {children}
     </TaskContext.Provider>
   );

@@ -4,7 +4,7 @@ import { SKP_LIST } from "@/lib/constants";
 import { deleteTask } from "@/lib/data";
 import EditModal from "@/components/EditModal";
 
-export default function DashboardWfo({ tasks, refreshData, onOpenForm }) {
+export default function DashboardWfo({ tasks, refreshData, updateTaskLocal, deleteTaskLocal, onOpenForm }) {
   const [filterBulan, setFilterBulan] = useState("Semua");
   const [filterSkp, setFilterSkp] = useState("Semua");
   const [deletingId, setDeletingId] = useState(null);
@@ -15,7 +15,11 @@ export default function DashboardWfo({ tasks, refreshData, onOpenForm }) {
     setDeletingId(id);
     try {
       await deleteTask(id);
-      await refreshData();
+      if (deleteTaskLocal) {
+        deleteTaskLocal(id);
+      } else if (refreshData) {
+        await refreshData();
+      }
     } catch (e) {
       alert("Gagal menghapus: " + e.message);
     } finally {
@@ -266,6 +270,7 @@ export default function DashboardWfo({ tasks, refreshData, onOpenForm }) {
         task={editingTask}
         onClose={() => setEditingTask(null)}
         refreshData={refreshData}
+        updateTaskLocal={updateTaskLocal}
       />
     )}
     </>

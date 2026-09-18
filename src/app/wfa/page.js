@@ -6,7 +6,7 @@ import { SkeletonDashboard } from "@/components/Skeleton";
 import { useRouter } from "next/navigation";
 
 export default function WfaPage() {
-  const { tasks, isLoading, refreshData } = useTasks();
+  const { tasks, isLoading, refreshData, updateTaskLocal, deleteTaskLocal } = useTasks();
   const router = useRouter();
 
   if (isLoading) {
@@ -17,6 +17,8 @@ export default function WfaPage() {
     <DashboardWfa 
       tasks={tasks} 
       refreshData={refreshData} 
+      updateTaskLocal={updateTaskLocal}
+      deleteTaskLocal={deleteTaskLocal}
       onOpenForm={() => router.push("/tambah?type=wfa")} 
     />
   );

@@ -9,7 +9,7 @@ function TambahContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const type = searchParams.get("type") || "wfo";
-  const { refreshData } = useTasks();
+  const { refreshData, addTaskLocal } = useTasks();
 
   const handleClose = () => {
     if (type === "wfa") {
@@ -34,6 +34,7 @@ function TambahContent() {
         isOpen={true} 
         onClose={handleClose} 
         refreshData={refreshData}
+        addTaskLocal={addTaskLocal}
         defaultTipeKerja={type === "wfa" ? "WFA" : "WFO"}
       />
     </div>

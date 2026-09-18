@@ -2,7 +2,7 @@ import { useState } from "react";
 import { updateTask } from "@/lib/data";
 import { SKP_LIST } from "@/lib/constants";
 
-export default function EditModal({ task, onClose, refreshData }) {
+export default function EditModal({ task, onClose, refreshData, updateTaskLocal }) {
   const [formData, setFormData] = useState({
     tanggal: task.tanggal || "",
     tipeKerja: task.tipeKerja || "WFO",
@@ -43,9 +43,14 @@ export default function EditModal({ task, onClose, refreshData }) {
         evidence: formData.evidence,
         tipe_evidence: formData.tipe_evidence,
       };
-      await updateTask(task.id, payload);
+      const updatedTask = await updateTask(task.id, payload);
       setShowSuccessOverlay(true);
-      await refreshData();
+      
+      if (updateTaskLocal) {
+        updateTaskLocal(updatedTask);
+      } else if (refreshData) {
+        await refreshData();
+      }
       setTimeout(() => {
         onClose();
         setTimeout(() => setShowSuccessOverlay(false), 300);
