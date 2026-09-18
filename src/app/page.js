@@ -13,6 +13,7 @@ export default function Home() {
   const [tasks, setTasks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [formSource, setFormSource] = useState("wfo"); // track which tab opened the form
 
   useEffect(() => {
     fetchData();
@@ -38,24 +39,25 @@ export default function Home() {
   };
 
   const renderContent = () => {
-    if (activeTab === "wfo") return <DashboardWfo tasks={tasks} refreshData={fetchData} onOpenForm={() => setActiveTab("tambah")} />;
-    if (activeTab === "wfa") return <DashboardWfa tasks={tasks} refreshData={fetchData} onOpenForm={() => setActiveTab("tambah")} />;
+    if (activeTab === "wfo") return <DashboardWfo tasks={tasks} refreshData={fetchData} onOpenForm={() => { setFormSource("wfo"); setActiveTab("tambah"); }} />;
+    if (activeTab === "wfa") return <DashboardWfa tasks={tasks} refreshData={fetchData} onOpenForm={() => { setFormSource("wfa"); setActiveTab("tambah"); }} />;
     if (activeTab === "overview") return <Overview tasks={tasks} />;
     if (activeTab === "tambah") return (
       <div className="fade-in w-full bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
         <div className="mb-6 border-b border-slate-100 pb-4 flex justify-between items-center">
           <div>
-            <h2 className="text-xl font-bold text-slate-800">Tambah Jurnal Kegiatan</h2>
+            <h2 className="text-xl font-bold text-slate-800">Tambah Jurnal {formSource === "wfa" ? "WFA" : "WFO"}</h2>
             <p className="text-sm text-slate-500 font-medium">Catat aktivitas harian Anda</p>
           </div>
-          <button onClick={() => setActiveTab("wfo")} className="text-sm font-semibold text-slate-500 hover:text-slate-800">
+          <button onClick={() => setActiveTab(formSource)} className="flex items-center gap-1.5 text-sm font-semibold text-slate-500 hover:text-slate-800">
             &larr; Kembali
           </button>
         </div>
         <TaskForm 
           isOpen={true} 
-          onClose={() => setActiveTab("wfo")} 
-          refreshData={fetchData} 
+          onClose={() => setActiveTab(formSource)} 
+          refreshData={fetchData}
+          defaultTipeKerja={formSource === "wfa" ? "WFA" : "WFO"}
         />
       </div>
     );

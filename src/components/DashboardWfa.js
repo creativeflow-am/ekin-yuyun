@@ -1,9 +1,25 @@
 import { useState } from "react";
 import { generatePdfWfa } from "@/lib/pdf";
+import { SKP_LIST } from "@/lib/constants";
+import { deleteTask } from "@/lib/data";
 
 export default function DashboardWfa({ tasks, refreshData, onOpenForm }) {
   const [filterBulan, setFilterBulan] = useState("Semua");
   const [filterSkp, setFilterSkp] = useState("Semua");
+  const [deletingId, setDeletingId] = useState(null);
+
+  const handleDelete = async (id) => {
+    if (!confirm("Hapus data ini?")) return;
+    setDeletingId(id);
+    try {
+      await deleteTask(id);
+      await refreshData();
+    } catch (e) {
+      alert("Gagal menghapus: " + e.message);
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
   const wfaTasks = tasks.filter(task => task.tipeKerja === "WFA");
   const filteredTasks = wfaTasks.filter(task => {
@@ -45,16 +61,16 @@ export default function DashboardWfa({ tasks, refreshData, onOpenForm }) {
 
           <div className="w-full md:w-1/2">
             <label className="block text-xs font-semibold text-slate-700 mb-1.5 ml-1">SKP</label>
-            <select value={filterSkp} onChange={(e) => setFilterSkp(e.target.value)} className="input-field w-full p-2.5 sm:p-3 bg-slate-50 lg:bg-white border border-slate-200 rounded-md focus:ring-2 focus:ring-[#FDB200] outline-none text-slate-700 text-sm cursor-pointer">
+            <select value={filterSkp} onChange={(e) => setFilterSkp(e.target.value)} className="input-field w-full p-2.5 sm:p-3 bg-slate-50 lg:bg-white border border-slate-200 rounded-md focus:ring-2 focus:ring-[#158684] outline-none text-slate-700 text-sm cursor-pointer">
               <option value="Semua">Semua SKP</option>
-              {[...new Set(wfaTasks.map(t => t.skp))].map((skp, i) => (
-                <option key={i} value={skp}>{skp}</option>
+              {SKP_LIST.map((skp) => (
+                <option key={skp} value={skp}>{skp}</option>
               ))}
             </select>
           </div>
 
           <div className="w-full md:w-auto ml-auto mt-2 md:mt-0 flex flex-row gap-2">
-            <button onClick={onOpenForm} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold py-2.5 px-5 rounded-md transition-all shadow-md flex justify-center items-center gap-2 text-sm sm:text-base whitespace-nowrap">
+            <button onClick={onOpenForm} className="w-full text-white font-extrabold py-2.5 px-5 rounded-md transition-all shadow-md flex justify-center items-center gap-2 text-sm sm:text-base whitespace-nowrap" style={{backgroundColor: "#158684"}}>
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
               </svg>
@@ -157,7 +173,12 @@ export default function DashboardWfa({ tasks, refreshData, onOpenForm }) {
                             </td>
                             <td className="px-4 py-3 text-center align-top">
                               <div className="flex justify-center items-center gap-2">
-                                <button className="text-red-500 bg-red-50 hover:bg-red-100 p-1.5 rounded transition-colors">
+                                <button
+                                  onClick={() => handleDelete(item.id)}
+                                  disabled={deletingId === item.id}
+                                  title="Hapus"
+                                  className="text-red-500 bg-red-50 hover:bg-red-100 disabled:opacity-50 p-1.5 rounded transition-colors"
+                                >
                                   <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                   </svg>
