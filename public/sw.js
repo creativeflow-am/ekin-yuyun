@@ -1,4 +1,4 @@
-const CACHE_NAME = 'jurnal-yuyun-v9';
+const CACHE_NAME = 'jurnal-yuyun-v10';
 const STATIC_ASSETS = [
   '/',
   '/logo.svg',
