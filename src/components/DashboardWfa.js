@@ -32,7 +32,8 @@ export default function DashboardWfa({ tasks, refreshData, onOpenForm }) {
   });
 
   return (
-    <div className="fade-in w-full">
+    <>
+      <div className="fade-in w-full">
       <div className="mb-6 lg:mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 text-center sm:text-left">
         <div className="w-full sm:w-auto">
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight">Work From Anywhere</h1>
@@ -312,5 +313,6 @@ export default function DashboardWfa({ tasks, refreshData, onOpenForm }) {
         refreshData={refreshData}
       />
     )}
+    </>
   );
 }
