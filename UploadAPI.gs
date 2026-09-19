@@ -25,7 +25,12 @@ function doPost(e) {
     var file = folder.createFile(blob);
     
     // Ubah hak akses agar siapa saja yang punya link bisa melihat (Viewer)
-    file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+    try {
+      file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+    } catch (sharingError) {
+      // Abaikan jika ditolak oleh kebijakan Admin Google Workspace (akun corporate)
+      // File tetap berhasil disimpan, namun sharing link mungkin hanya untuk orang di dalam organisasi
+    }
     
     // Ambil URL link
     var fileUrl = file.getUrl();
